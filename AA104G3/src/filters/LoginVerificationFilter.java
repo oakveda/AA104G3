@@ -67,11 +67,7 @@ public class LoginVerificationFilter implements Filter {
 				cartVO.setProcount(Integer.parseInt(arr[1]));				
 				cartList.add(cartVO);				
 			}
-			
-			for(CartVO vo :cartList){
-				System.out.println(vo);
-			}
-			
+
 			session.setAttribute("cartList", cartList);	
 			
 			/*當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更動*/

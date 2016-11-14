@@ -38,6 +38,7 @@
 </head>
 
 <body>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-4"></div>
@@ -145,20 +146,36 @@
 						</c:forEach>
 					</table>
 					<!-- 若購物車是空的就不顯示 -->
+
+
 					<c:if test="${not empty cartList}">
 						<div class="panel-body">
 							<div class=" text-right ">
-								<!-- <span>總價 : </span> -->
+
+								<c:if test="${not empty memberVO}">
+									<!-- 一般會員的結帳 -->
+									<div class="ck">
+										<form method="post"
+											action="<%=request.getContextPath()%>/orders/orders.do">
+											<button type="submit" class="btn btn-info">結帳</button>
+											<input type="hidden" name="memno" value="${memberVO.memno}">
+											<input type="hidden" name="requestURL"
+												value="<%=request.getServletPath()%>"> <input
+												type="hidden" name="action" value="write_Orders_Detail">
+										</form>
+									</div>
+								</c:if>
 								<div class="ck">
-									<form method="post"
-										action="<%=request.getContextPath()%>/orders/orders.do">
-										<button type="submit" class="btn btn-info ">結帳</button>
-										<input type="hidden" name="memno" value="${memberVO.memno}">
-										<input type="hidden" name="requestURL"
-											value="<%=request.getServletPath()%>"> <input
-											type="hidden" name="action" value="write_Orders_Detail">
-									</form>
+									<c:if test="${empty memberVO}">
+										<!-- 訪客的結帳 -->
+										<form method="post" action="<%=request.getContextPath()%>/login.jsp">
+											<input type="submit" value="結帳"  class="btn btn-default"> <input type="hidden"
+												name="requestURL" value="<%=request.getServletPath()%>">
+										</form>
+									</c:if>
 								</div>
+
+
 								<div class="ck">
 									<a
 										href="<%=request.getContextPath()%>/front-end/cart/select_page.jsp">
