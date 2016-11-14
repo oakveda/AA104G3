@@ -1,0 +1,727 @@
+body{
+	font-family: '微軟正黑體';
+}
+
+/* ===================   首頁   =================== */
+h2{
+	color:#275565;
+	font-weight: bolder;
+}
+h3{
+	color:#275565;
+	font-weight: bolder;
+	padding: 10px 20px;
+	margin: 0px;
+	display:inline-block;
+}
+.navbar-nav>li{
+	float: left;
+}
+.navbar{
+	border-radius: 0;
+	margin-bottom: 0px;
+	background-color: #57bee6;
+	text-align: center;
+}
+.navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color:#fff;
+	text-align: center;	
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #fff;
+  background-color: #275565;
+}
+/* 導覽列置中 */
+.navbar .navbar-nav { 
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+
+.ad{
+	width:2800px ;
+	height: 700px;
+}
+
+/*** 標題 ***/
+.indexTitle{
+	width: 1160px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #57bee6;
+	margin-top: 50px;
+}
+
+.indexTitleS{
+	width: 570px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #57bee6;
+	margin-top: 50px;
+}
+.indexTitle a, 
+.indexTitleS a {
+    color: #ff7c04;
+    float: right;
+    font-size: 14px;
+    display:inline-block;
+    padding: 13px 20px;
+	text-decoration:none;
+}
+.indexTitle a:hover,
+.indexTitleS a:hover {
+    color: #57bee6;
+    text-decoration:none;
+}
+.leftBox{
+	border: 1px solid #e9e9e9;
+	width: 540px;
+	height: 300px;
+	float: left;
+	padding: 10px;
+	margin: 15px;
+}
+.rightBox{
+	border: 1px solid #e9e9e9;
+	width: 540px;
+	height: 300px;
+	float: left;
+	padding: 10px;
+	margin: 15px;		
+}
+.newsContentBox{
+	padding: 0px;
+	height: 90px;
+}
+.newList{
+	border-top: solid 1px #666;
+}
+
+.newsTitle{
+	font-size: 16px;
+	font-weight: bolder;
+}
+.teamNum{
+	color: #ff7c04;	
+	font-weight: bolder;
+	letter-spacing: 2px;
+	line-height: 0px;
+}
+.newsContent{
+	font-size: 15px;
+	font-weight: bolder;
+	line-height: 15px;
+}
+.footer{
+	color:#fff;
+	background-color: #58bee6;
+	font-size: 15px;
+	font-weight: bolder;
+	width: 100%;
+	height:60px;
+	text-align:center;
+	margin-top: 50px;
+    padding: 20px 0px 0px 0px;
+}
+/*** 產品 ***/
+.indexBox{                         
+	width: 200px;
+	margin: 10px 15px;
+	text-align:center;
+	/* border: 1px dashed #fe80a8; */
+}
+.indexBoxTitle{
+	font-size: 16px;
+	font-weight: bolder;
+	margin-top: 5px;
+	height: 16px;
+	text-align:center;
+}
+.img-responsive{
+	width: 180px;
+	height: 180px;
+	border: 1px solid #e9e9e9;
+	margin-left: 22px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+
+
+
+
+
+
+
+/* ===================   共同   =================== */
+.categoryList{
+	list-style-type:none;
+	float: left;
+	padding-top: 10px;
+	padding-left: 0px;
+}
+.categoryList li,
+.categoryList li a{
+	color: #666666;
+	background-color: #f7f7f7;
+	width: 170px;
+	font-size: 18px;
+	text-align: left;
+	border-bottom: 1px solid #e9e9e9;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	list-style-type: none;
+}
+.categoryList li a:hover{
+	background-color: #f7f7f7;
+	list-style-type: none;
+	text-decoration: none;
+}
+.categoryList li .active > a,
+.categoryList li .active > a:hover,
+.categoryList li .active > a:focus {
+	color: #57bee6;
+	background-color: red;
+}
+
+.search{
+	padding-top: 10px;
+}
+
+.article-title a {
+    color: #000;
+	font-size: 16px;
+    font-weight: bolder;
+	padding: 0px;
+}
+.article {
+	margin-top: 10px;
+	margin-bottom: 40px;
+	padding-top: 10px;
+	height: 150px;
+}
+.article + .article {
+	padding-top: 40px;
+}
+
+/* 評分 */
+.fa-star{
+	color: #ff7c04;
+	font-size: 20px;
+}
+.fa-star-half{
+	color: #ff7c04;
+	font-size: 20px;
+}
+
+
+/* ===================   最新消息   =================== */
+.news h2{
+	color: #5a2400;
+}
+.news h3{
+	color: #5a2400;
+}
+.news .navbar{
+	border-radius: 0;
+	margin-bottom: 30px;
+	background-color: #ef8200;
+	text-align: center;
+}
+.news .navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color:#fff;
+	text-align: center;
+}
+.news .navbar-default .navbar-nav>li>a:hover{
+	color: #7d3200;
+}
+.news .navbar-default .navbar-nav > .active > a,
+.news .navbar-default .navbar-nav > .active > a:hover,
+.news .navbar-default .navbar-nav > .active > a:focus {
+  color: #fff;
+  background-color: #7d3200;
+}
+.newsCategory{
+	width: 170px;
+	height: 50px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #ef8200;
+	padding: auto 10px;
+}
+
+.newsPage{
+	margin-top: 40px;
+}
+.newsPage > li > a,
+.newsPage > li > span {
+  color: #7d3200;
+}
+.newsPage > li > a:hover,
+.newsPage > li > span:hover,
+.newsPage > li > a:focus,
+.newsPage > li > span:focus {
+  color: #7d3200;
+  background-color: #e6e6e6;
+}
+.newsPage > .active > a,
+.newsPage > .active > span,
+.newsPage > .active > a:hover,
+.newsPage > .active > span:hover,
+.newsPage > .active > a:focus,
+.newsPage > .active > span:focus {
+  background-color: #7d3200;
+  border-color: #7d3200;
+}
+.news .footer{
+	background-color: #ef8200;
+}
+
+
+
+
+/* ===================   商城   =================== */
+.product .navbar{
+	margin-bottom: 30px;
+}
+.proCategory{
+	width: 170px;
+	height: 50px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #57bee6;
+	padding: auto 10px;
+}
+.proSearchNum{
+	color: #e76e00;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.proCash{
+	font-size: 18px;
+	color : #57bee6;	
+	font-weight: bolder;
+	letter-spacing: 2px;
+	margin: 0px;
+}
+.proTitle{
+	font-size: 16px;
+	font-weight: bolder;
+	margin-top: 5px;
+	height: 16px;
+	text-align:left;
+}
+.proDesc{
+	font-size: 14px;
+	line-height: 16px;
+}
+.proContent{
+	font-size: 16px;
+	line-height: 20px;
+}
+.proBtn{
+	padding : 6px 8px;
+	font-size : 16px;
+	border-radius: 2px;
+	color : #fff;
+	background-color: #57bee6;
+	border-color:#275565;
+	margin: 10px auto 10px auto; 
+}
+.proBtn:hover{
+	color : #fff;
+	background-color: #ff7c04;
+	border-color:#e76e00;
+}
+
+.selectpicker{
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+}
+.reportBtn{
+	padding : 6px 8px;
+	font-size : 16px;
+	border-radius: 2px;
+	color : #fff;
+	background-color: #57bee6;
+	border-color:#275565;
+	margin: 10px auto 10px auto; 
+}
+.reportBtn:hover{
+	color : #fff;
+	background-color: #ff7c04;
+	border-color:#e76e00;
+}
+/* 搜尋bar有箭頭
+.search-box{
+	font-size: 13px;
+	width: 180px;
+	background: #fff url('../images/search1.png') no-repeat 150px 4px;
+	padding: 3px 3px 3px 22px;
+}
+*/
+
+
+
+
+
+/* ===================   店家   =================== */
+.storeCategory{
+	width: 170px;
+	height: 50px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #ff82ad;
+	padding: auto 10px;
+}
+.store h3{
+	color: #b35a81;
+}
+.store h2{
+	color: #b35a81;
+}
+.store .navbar{
+	border-radius: 0;
+	margin-bottom: 30px;
+	background-color: #ff82ad;
+	text-align: center;
+}
+.store .navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color: #fff;
+	text-align: center;
+}
+.store .navbar-default .navbar-nav>li>a:hover{
+	color: #b35a81;
+}
+.store .navbar-default .navbar-nav > .active > a,
+.store .navbar-default .navbar-nav > .active > a:hover,
+.store .navbar-default .navbar-nav > .active > a:focus {
+	color: #fff;
+	background-color: #b35a81;
+}
+.store .footer{
+	background-color: #ff82ad;
+}
+
+
+
+
+/* ===================   揪團   =================== */
+.team h2{
+	color: #086531;
+}
+.team h3{
+	color: #086531;
+}
+.team .navbar{
+	border-radius: 0;
+	margin-bottom: 30px;
+	background-color: #2FC26B;
+	text-align: center;
+}
+.team .navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color:#fff;
+	text-align: center;	
+}
+.team .navbar-default .navbar-nav>li>a:hover{
+	color: #086531;
+}
+.team .navbar-default .navbar-nav > .active > a,
+.team .navbar-default .navbar-nav > .active > a:hover,
+.team .navbar-default .navbar-nav > .active > a:focus {
+  color: #fff;
+  background-color: #086531;
+}	
+.teamCategory{
+	width: 170px;
+	height: 50px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #2FC26B;
+	padding: auto 10px;
+}
+.team .footer{
+	background-color: #2FC26B;
+}
+
+
+
+
+
+/* ===================   常見問答   =================== */
+.faqCategory{
+	width: 170px;
+	height: 50px;
+	border: 1px solid #e9e9e9;
+	border-left: 5px solid #D98AD4;
+	padding: auto 10px;
+}
+.faqCategory h3{
+	color: #8235a1; /* 9c6f01*/
+}
+.faq h2{
+	color: #8235a1;
+}
+.faq .navbar{
+	border-radius: 0;
+	margin-bottom: 30px;
+	background-color: #D98AD4;
+	text-align: center;
+}
+.faq .navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color: #fff;
+	text-align: center;
+}
+.faq .navbar-default .navbar-nav>li>a:hover{
+	color: #8235a1;
+}
+.faq .navbar-default .navbar-nav > .active > a,
+.faq .navbar-default .navbar-nav > .active > a:hover, 
+.faq .navbar-default .navbar-nav > .active > a:focus {
+	color: #fff;
+	background-color: #8235a1;
+}
+.faq .footer{
+	background-color: #D98AD4;
+}
+
+
+
+
+/* ===================   麵包屑 Breadcrumb   =================== */
+.breadcrumb {
+	margin-top: 0px;
+	padding: 13px 15px;
+	border-radius: 0;
+	background: #f5f5f5;
+	font-size: 14px;
+	line-height: 24px;
+	position: relative;
+}
+.breadcrumb:before, .breadcrumb:after {
+	content: '';
+	position: absolute;
+	left: -10000px;
+	top: 0;
+	bottom: 0;
+	width: 10000px;
+	background: #f5f5f5;
+}
+.breadcrumb:after {
+    left: auto;
+    right: -10000px; 
+}
+.breadcrumb a {
+    display: inline-block; 
+}
+.breadcrumb a:hover i {
+	color: #494949; 
+}
+.breadcrumb > li {
+	position: relative; 
+}
+.breadcrumb > li > a,
+.breadcrumb > li > a > i,
+.breadcrumb > li > span,
+.breadcrumb > li + li:before {
+      vertical-align: middle; 
+}
+/*
+.breadcrumb > li + li:before {
+	content: '\e0c2';
+	padding: 0;
+	font-size: 20px;
+	line-height: 20px; 
+}
+
+.breadcrumb i {
+    color: #4bb5c1;
+    -moz-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    -webkit-transition: color 0.3s ease;
+    transition: color 0.3s ease; 
+}
+.breadcrumb i:before {
+	content: '\e0ba';
+	font-family: "material-design";  
+}
+*/
+
+
+
+
+
+/* ===================   後台登入   =================== */
+.bLogin{
+	border: 1px solid #275565;
+	background-color: #fff;
+	height: 300px;
+	width: auto;
+	border-radius: 10px;
+	margin-top: 100px;
+	padding-top: 20px;
+}
+.bLogin h2{
+	color: #3179b5;
+	text-align: center;
+	margin-bottom: 40px;
+}
+.form-control{
+	width: 150px ;
+	margin-bottom: 10px;
+}
+.bHeader{	
+	color: #fff;
+	float: left;
+	margin-left: 15px;
+}
+.bBody{
+	background-color: #3179b5;
+}
+.bFooter{
+	margin-top: 5px;
+	color: #ccc;
+	background-color: #fff;
+}
+
+
+/***** 右上 ****/
+.bBody .navbar{
+	border-radius: 0;
+	background-color: #3179b5;
+}
+.bBody .navbar-default .navbar-nav>li>a{
+	font-size: 16px;
+	font-weight: bolder;
+	color: #fff;
+	text-align: center;
+}
+.bBody .navbar-default .navbar-nav>li>a:hover{
+	color: #ccc;
+}
+.bBody .navbar-default .navbar-nav > .active > a,
+.bBody .navbar-default .navbar-nav > .active > a:hover, 
+.bBody .navbar-default .navbar-nav > .active > a:focus {
+	color: #fff;
+	background-color: #8235a1;
+}
+
+/**** 左側選單 ****/
+.panel-group{
+	background-color: #3179b5;
+	border-radius: 0px;
+}
+.panel-heading{
+	border-radius: 0px;
+}
+.panel-group .panel-heading + .panel-collapse > .panel-body,
+.panel-group .panel-heading + .panel-collapse > .list-group {
+  border-top: 0px;
+}
+.panel-group .panel-footer + .panel-collapse .panel-body {
+  border-bottom: 0px;
+}
+.panel-heading a:hover,
+.panel-heading a:focus {
+	color: #bbb;
+	text-decoration:none;
+}
+.bListPage > .active > a,
+.bListPage > .active > span,
+.bListPage > .active > a:hover,
+.bListPage > .active > span:hover,
+.bListPage > .active > a:focus,
+.bListPage > .active > span:focus {
+	color: #bbb;
+	background-color: #efefef;
+	border-color: #dedfde;
+}
+
+
+
+
+
+
+
+
+/***** 內文 *****/
+.bList{
+	background-color: #fff;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-top: 20px;
+}
+.bList .table{
+	border: 1px solid #e7e3e7;
+}
+.bList .table>tbody>tr>td,
+.bList .table>tbody>tr>th,
+.bList .table>thead>tr>td,
+.bList .table>thead>tr>th {
+	vertical-align: middle;
+    text-align: left;
+    border-top: 1px solid #e7e3e7;
+    font-size: 14px;
+}
+.bList .table-striped>tbody>tr:nth-of-type(odd){
+	background-color: #e9e9e9;
+}
+.bListTitle{
+	background: #ececec;
+    color: #666;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 700;
+	border-radius: 10px 10px 0px 0px;
+	border: 1px solid #e7e3e7;	
+}
+.bListConent{
+	padding: 25px;
+	border: 1px solid #e7e3e7;
+	height: 650px;
+	border-radius: 0px 0px 10px 10px;
+}
+.bListConent table td form{
+	padding: 0px;
+	padding-right: 3px;
+	margin: 0px;
+	float:left;
+}
+
+.bListPage {
+	margin: 0px;
+	display: inline-block;
+}
+.bListPage > li > a,
+.bListPage > li > span {
+	color: #666;
+}
+.bListPage > li > a:hover,
+.bListPage > li > span:hover,
+.bListPage > li > a:focus,
+.bListPage > li > span:focus {
+	color: #666;
+	background-color: #efefef;
+}
+.bListPage > .active > a,
+.bListPage > .active > span,
+.bListPage > .active > a:hover,
+.bListPage > .active > span:hover,
+.bListPage > .active > a:focus,
+.bListPage > .active > span:focus {
+	color: #666;
+	background-color: #efefef;
+	border-color: #dedfde;
+}

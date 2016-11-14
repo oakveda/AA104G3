@@ -1,0 +1,841 @@
+﻿
+-- ==============================員工相關==============================
+DROP TABLE emp_permission;
+DROP TABLE employee;
+DROP TABLE permission;
+-- =================廣告輪播、最新消息、熱門產品、熱門店家===================
+DROP TABLE ad;
+DROP TABLE news;
+DROP TABLE popular_product;
+DROP TABLE popular_store;
+-- ==============================購物相關==============================
+DROP TABLE cart;
+DROP TABLE orders_detail;
+DROP TABLE orders;
+-- ==============================產品相關==============================
+DROP TABLE PRODUCT_COMMENT;
+DROP TABLE product_report;
+DROP TABLE product;
+DROP TABLE product_class;
+-- ==============================揪團相關==============================
+DROP TABLE member_comment;
+DROP TABLE team_report;
+DROP TABLE team_detail;
+DROP TABLE team;
+-- ============================會員與店家相關===========================
+DROP TABLE blacklist;
+DROP TABLE reservation;
+DROP TABLE stotable;
+DROP TABLE favorite_store;
+DROP TABLE store_comment;
+DROP TABLE store_report;
+DROP TABLE store;
+DROP TABLE friend;
+DROP TABLE MEMBER;
+
+DROP SEQUENCE empno_SEQ;
+DROP SEQUENCE memcomno_SEQ;
+DROP SEQUENCE teamrepno_SEQ;
+DROP SEQUENCE teamno_SEQ;
+DROP SEQUENCE adno_SEQ;
+DROP SEQUENCE newsno_SEQ;
+DROP SEQUENCE storep_seq;
+DROP SEQUENCE store_SEQ;
+DROP SEQUENCE stotable_SEQ;
+DROP SEQUENCE reservation_SEQ;
+DROP SEQUENCE store_comment_SEQ;
+DROP SEQUENCE prorep_seq;
+DROP SEQUENCE member_seq;
+DROP SEQUENCE product_comment_seq;
+DROP SEQUENCE pro_seq;
+DROP SEQUENCE class_seq;
+DROP SEQUENCE orders_seq;
+DROP SEQUENCE orddet_seq;
+
+-- ===============================權限===============================
+
+
+CREATE TABLE permission (
+
+permno            VARCHAR2(4) NOT NULL CONSTRAINT permission_perno_PK PRIMARY KEY,
+permname          VARCHAR2(18)
+
+);
+
+INSERT INTO permission VALUES ('E01','員工管理');
+INSERT INTO permission VALUES ('E02','員工權限管理');
+INSERT INTO permission VALUES ('S01','店家審核');
+INSERT INTO permission VALUES ('S02','店家帳號管理');
+INSERT INTO permission VALUES ('R01','店家檢舉管理');
+INSERT INTO permission VALUES ('R02','商品檢舉管理');
+INSERT INTO permission VALUES ('R03','揪團檢舉管理');
+INSERT INTO permission VALUES ('H01','管理最新消息');
+INSERT INTO permission VALUES ('H02','管理廣告');
+INSERT INTO permission VALUES ('M01','會員管理');
+COMMIT;
+
+
+-- ===============================員工===============================
+
+CREATE SEQUENCE empno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+
+CREATE TABLE employee (
+
+empno            	VARCHAR2(6) NOT NULL CONSTRAINT employee_empno_PK PRIMARY KEY,
+empid                   VARCHAR2(20) NOT NULL,
+emppw               	VARCHAR2(20) NOT NULL,
+empname           	VARCHAR2(20) NOT NULL,
+empemail           	VARCHAR2(20) NOT NULL,
+empstate 		VARCHAR2(2)  NOT NULL
+);
+
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10409','elisa26411','游凱帆','eli411@gmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10410','asongforlady','邱筠婷','forlady@gmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10402','f5110486','金正昊','f5110486@hotmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10423','sincerered','陳肯弘','sierered@gmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10425','lucian199027','吳政勳','lucian@gmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10426','666lst448','宋博元','lst448@hotmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10427','oakveda','葉君毅','oakveda@gmail.com', '1');
+INSERT INTO employee VALUES (lpad(to_char(empno_SEQ.NEXTVAL),6 ,'0'),'AA10428','oakveda','林宗竟','laoda@gmail.com', '1');
+COMMIT;
+
+-- ==============================員工權限==============================
+
+CREATE TABLE emp_permission(
+
+empno    VARCHAR2(6) NOT NULL,
+permno   VARCHAR2(4) NOT NULL,
+
+CONSTRAINT emp_permission_empno_permno_PK PRIMARY KEY(empno, permno),
+CONSTRAINT emp_permission_empno_FK FOREIGN KEY(empno) REFERENCES employee(empno),
+CONSTRAINT emp_permission_permno_FK FOREIGN KEY(permno) REFERENCES permission(permno)
+);
+COMMIT;
+
+INSERT INTO emp_permission(empno,permno) VALUES ('000001','S01'); 
+INSERT INTO emp_permission(empno,permno) VALUES ('000001','S02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000001','H01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000001','H02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000002','H01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000002','H02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000003','S01'); 
+INSERT INTO emp_permission(empno,permno) VALUES ('000003','S02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000003','R01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000004','R02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000004','S01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000004','H02'); 
+INSERT INTO emp_permission(empno,permno) VALUES ('000005','S02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000005','H01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000006','R02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000006','H01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','E01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','E02'); 
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','S01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','S02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','H01');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','H02');
+INSERT INTO emp_permission(empno,permno) VALUES ('000007','M01');
+COMMIT;
+
+-- ==============================廣告輪播==============================
+CREATE SEQUENCE adno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+
+CREATE TABLE ad (
+ adno                  VARCHAR2(6) NOT NULL,
+ adtitle               VARCHAR2(30),
+ adpic                 BLOB,
+ addate                DATE NOT NULL,
+ CONSTRAINT ad_adno_PK PRIMARY KEY(adno)
+);
+
+INSERT INTO ad(adno,adtitle,addate) VALUES (lpad(adno_SEQ.nextval,6,0),'廣告一',TO_DATE('2016-10-01','YYYY-MM-DD'));
+INSERT INTO ad(adno,adtitle,addate) VALUES (lpad(adno_SEQ.nextval,6,0),'廣告二',TO_DATE('2016-10-08','YYYY-MM-DD'));
+INSERT INTO ad(adno,adtitle,addate) VALUES (lpad(adno_SEQ.nextval,6,0),'廣告三',TO_DATE('2016-10-15','YYYY-MM-DD'));
+INSERT INTO ad(adno,adtitle,addate) VALUES (lpad(adno_SEQ.nextval,6,0),'廣告四',TO_DATE('2016-10-22','YYYY-MM-DD'));
+
+-- ==============================最新消息==============================
+CREATE SEQUENCE newsno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TABLE news(
+ newsno                  VARCHAR2(6) NOT NULL,
+ newstitle               VARCHAR2(100) NOT NULL,
+ newsdesc              	 CLOB,
+ newsdate                DATE NOT NULL,
+ CONSTRAINT news_newsno_PK PRIMARY KEY(newsno)
+);
+
+INSERT INTO news VALUES (lpad(newsno_SEQ.nextval,6,0),'二十年前的感動...神奇寶貝戰鬥卡新手入門包販售！','二十年前販售的「神奇寶貝戰鬥卡」。最初的商品「第1彈 新手入門包」再現，決定在2016年2月27販售！這東西是由電玩「神奇寶貝」當基礎，再把他結合桌遊的玩法，讓小孩不至於整天打電動，偶爾可以跟別人在現實中互動，現在20年紀念，再次推出當初的新手包！！這款遊戲是1996年10月20日初次販售，距今約20年了，如今回歸，不只讓大朋友感動，也能讓小朋友感到新奇！！',TO_DATE('2016-10-01','YYYY-MM-DD'));
+INSERT INTO news VALUES (lpad(newsno_SEQ.nextval,6,0),'《編年史：盧恩傳奇》beta 版 體驗充滿桌遊風格的全新卡牌遊戲','巴哈姆特電玩瘋預定今（12）日晚間 20:00～21:00 直播 PC 卡牌對戰遊戲《編年史：盧恩傳奇》beta 版，由編輯信廷與特約冬瓜主持。以 Web 遊戲《RuneScape》為背景，《編年史：盧恩傳奇》充滿濃濃的桌遊風格，今晚要帶領玩家一探這款擁有與眾不同要素與玩法的卡牌新作。',TO_DATE('2016-10-02','YYYY-MM-DD'));
+INSERT INTO news VALUES (lpad(newsno_SEQ.nextval,6,0),'桌遊《船轉企鵝》可愛的萌企鵝平衡遊戲','平衡的桌上遊戲在台灣是歷久不衰的，從熊貓老師幼稚國時期到現在出社會工作，這類的遊戲都一直在推成出新，而且每每都會創下驚人的銷售成績，可能玩法簡單而且每次玩都可證明自己「手部」技術比別人強，只要短短的時間就可獲得滿滿的成就感，所以廠商都會一直推陳出新，而且玩法又比舊遊戲更刺激，這款《船轉企鵝》主打有可愛的「企鵝」模型以及非常有份量巨大帆船，來搶攻平衡桌上遊戲市場！',TO_DATE('2016-10-04','YYYY-MM-DD'));
+INSERT INTO news VALUES (lpad(newsno_SEQ.nextval,6,0),'《魔法風雲會》首次參展台北電玩展','集換式卡牌遊戲《魔法風雲會》今年首次參加 2016 台北國際電玩展，現場將有教學人員以 1 對 1 教學帶領新手玩家體驗預定於 22 日上市新系列《守護者誓約》，故事和時空背景將延續前一系列《再戰贊迪卡》並對神祕生物奧札奇有諸多著墨。此外，呼應奧札奇的無色屬性，不但新推出無色基本地「荒野」與無色魔法力專屬符號，更重新啟動 2 vs 2 雙頭巨人賽制並增加全新「潮湧」異能，增添遊戲豐富性。',TO_DATE('2016-10-22','YYYY-MM-DD'));
+INSERT INTO news VALUES (lpad(newsno_SEQ.nextval,6,0),'2016 台北國際電玩展 虛擬實境與上百款新作遊戲盛大展出','由台北市電腦公會舉辦的「2016 台北國際電玩展（2016 Taipei Game Show）」即將於下週四 1 月 28 日在台北世貿一館正式登場，主辦單位特別於今（20）日舉辦展前記者會，邀請 8 家主要參展廠商代表登台介紹本次展出活動的內容，另外還有多家參展廠商現場設攤進行展前宣傳。',TO_DATE('2016-10-22','YYYY-MM-DD'));
+
+/* ------------------------------------------ 店家 ------------------------------------------ */
+CREATE SEQUENCE store_SEQ 
+INCREMENT BY 1
+START WITH 1
+NOCACHE;
+
+CREATE TABLE store (
+stono VARCHAR2(6) NOT NULL CONSTRAINT store_stono_PK PRIMARY KEY,
+stoid VARCHAR2(20) NOT NULL CONSTRAINT store_stoid_UK UNIQUE,
+stopw VARCHAR2(20) NOT NULL,
+stostate VARCHAR2(2) NOT NULL,
+stoname VARCHAR2(40) NOT NULL,
+stoemail VARCHAR2(40) NOT NULL,
+stoaddr VARCHAR2(100) NOT NULL,
+stophone VARCHAR2(20),
+stoowner VARCHAR2(20),
+stolong NUMBER(9,6) NOT NULL,
+stolati NUMBER(9,6) NOT NULL,
+stopic BLOB,
+stoproof BLOB,
+stobh VARCHAR2(168) NOT NULL,
+bankno VARCHAR2(4) NOT NULL,
+bankname VARCHAR2(40) NOT NULL,
+accountname VARCHAR2(40) NOT NULL,
+accountno VARCHAR2(20) NOT NULL
+);
+
+  INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0001','aa0001','1','桌遊店A','aa01@gmail.com','新竹市-東區-研新二路6號','03-4398765','某某人',24.778549,120.991573,NULL,NULL,'000000111111111111111100000000111111111111111111000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','700','郵局','某某人','11111111111111');
+ INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0002','aa0002','1','桌遊店B','aa02@gmail.com','桃園市-中壢區-領航北路一段1號','03-4391111','大都督',25.003884,121.201556,NULL,NULL,'000000111111100111111100000000111111111111111110000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','808','玉山銀行','大都督','22222222222222');
+ INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0003','aa0003','1','桌遊店C','aa03@gmail.com','桃園市-中壢區-中美路76號','03-4392222','某某',24.958823,121.225793,NULL,NULL,'000000111111111111111000000000111111111111111111000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','822','中國信託','某某','33333333333333');
+ INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0004','aa0004','1','桌遊店D','aa04@gmail.com','台北市-中正區-忠孝西路一段49號','03-4391234','哈哈',25.046309,121.517878,NULL,NULL,'000000111111111111111110000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','007','第一銀行','哈哈','44444444444444');
+ INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0005','aa0005','1','桌遊店E','aa05@gmail.com','桃園市-中壢區-大仁街60號','03-4395656','顆顆',24.955902,121.241471,NULL,NULL,'000000111111111111111111000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','102','華泰銀行','顆顆','55555555555555');
+ INSERT INTO store VALUES (lpad(to_char(STORE_SEQ.NEXTVAL),6,'0'),'aa0006','aa0006','1','桌遊店F','aa06@gmail.com','桃園市-中壢區-健行路41號','03-4395566','抖抖',24.951400,121.227000,NULL,NULL,'000000111111111111110000000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100000000111111111111111100','083','渣打銀行','抖抖','66666666666666');
+ COMMIT;
+
+
+/* ------------------------------------------ 桌位 ------------------------------------------ */
+CREATE SEQUENCE stotable_SEQ 
+INCREMENT BY 1
+START WITH 1
+NOCACHE;
+
+CREATE TABLE stotable (
+tableno VARCHAR2(6) NOT NULL CONSTRAINT stotable_tableno_PK PRIMARY KEY,
+stono VARCHAR2(6) NOT NULL,
+tablemin NUMBER(2) NOT NULL,
+tablemax NUMBER(2) NOT NULL,
+tablecount NUMBER(2) NOT NULL,
+tablestate NUMBER(2) NOT NULL,
+CONSTRAINT stotable_stono_FK FOREIGN KEY (stono) REFERENCES store (stono)
+);
+
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000001', 2, 4, 6, 6);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000001', 4, 8, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000001', 6, 10, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000002', 2, 4, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000002', 4, 8, 1, 1);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000002', 6, 10, 1, 1);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000003', 2, 4, 6, 6);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000003', 4, 8, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000003', 8, 12, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000004', 2, 4, 5, 5);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000004', 4, 6, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000004', 4, 11, 1, 1);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000005', 2, 4, 6, 6);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000005', 4, 8, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000005', 6, 10, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000006', 2, 4, 6, 6);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000006', 4, 8, 2, 2);
+INSERT INTO stotable VALUES (lpad(to_char(stotable_SEQ.NEXTVAL),6 ,'0'),'000006', 6, 10, 2, 2);
+COMMIT;
+
+-- ==============================會員==============================
+CREATE TABLE MEMBER(
+ MEMNO VARCHAR2(6) NOT NULL,
+ MEMID VARCHAR2(20) NOT NULL UNIQUE,
+ MEMPSW VARCHAR2(20) NOT NULL,
+ MEMNAME VARCHAR2(20) NOT NULL,
+ MEMEMAIL VARCHAR2(50) NOT NULL,
+ MEMADDR VARCHAR2(100) NOT NULL,
+ MEMPHONE VARCHAR2(10) NOT NULL,
+ MEMPIC BLOB DEFAULT NULL,
+ REGDATE DATE DEFAULT SYSDATE,
+ MEMNICK VARCHAR2(20),
+ MEMIDENT VARCHAR2(10) NOT NULL,
+ MEMBIRTH DATE,
+ MEMSTATE VARCHAR2(4) DEFAULT 0,
+ MEMGENDER VARCHAR2(4),
+ CONSTRAINT MEMBER_PRIMARY_KEY PRIMARY KEY (MEMNO) 
+);
+
+CREATE SEQUENCE member_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+INSERT INTO MEMBER
+(MEMNO,MEMID,MEMPSW,MEMNAME,MEMEMAIL,MEMADDR,MEMPHONE,MEMPIC,REGDATE,MEMNICK,MEMIDENT,MEMBIRTH,MEMSTATE,MEMGENDER) 
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'C000001','Cc00001','ADDER','OKD@gmail.com','33001桃園市桃園區縣府路1號','0912123456',
+DEFAULT,DEFAULT,'阿倫','H174553083',TO_DATE('17-11月-1981','DD-MON-YYYY'),'1','1');
+INSERT INTO MEMBER
+(MEMNO,MEMID,MEMPSW,MEMNAME,MEMEMAIL,MEMADDR,MEMPHONE,MEMPIC,REGDATE,MEMNICK,MEMIDENT,MEMBIRTH,MEMSTATE,MEMGENDER) 
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'A000001','Aa00001','ARRAY','HuXiaoHan@hotmail.com','320桃園市中壢區大享街一段158巷','0917568366',DEFAULT,DEFAULT,'歐低','H100742083',
+        TO_DATE('17-7月-1990','DD-MON-YYYY'),DEFAULT,'1');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Pichis','ce0Eetahn3','吳錦蔚','WuJinYu@yahoo.com.tw','320桃園市中壢區民族路六段508號','037588485',DEFAULT,DEFAULT,'Pichis','H196570186',
+        TO_DATE('17-12月-1920','DD-MON-YYYY'),'0','1');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'WuJinYu','Df123456','彭志豪','PengZhiHao@hotmail.com','338桃園市蘆竹區南崁路一段369號','0952236685',DEFAULT,DEFAULT,'Somard90','H175170211',
+        TO_DATE('20-12月-1938','DD-MON-YYYY'),'1','1');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Whispectilly','Quuvae2Gic','李堯寬','LiYaoKuan@gmail.com','600嘉義市東區忠孝路668號','052719088',DEFAULT,DEFAULT,'Whispectilly','Q175912797',
+        TO_DATE('23-1月-2000','DD-MON-YYYY'),'0','1');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Incentens','ohZahYah832','馮齡儀','PingLingYi@yahoo.com.tw','408台中市南屯區文心南三路289號','0437042855',DEFAULT,DEFAULT,'Incentens','B233178651',
+        TO_DATE('15-2月-1957','DD-MON-YYYY'),'1','0');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Manced','eithona34Ph','邵溱儀','ShaoQinYi@hotmail.com','114台北市內湖區舊宗路一段268號','0287910110',DEFAULT,DEFAULT,'Manced','A264412276',
+        TO_DATE('25-7月-1940','DD-MON-YYYY'),'0','0');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Anction','wieWaisha6oo','杜偉鈴','Anction@hotmail.com','300新竹市東區慈雲路188號','035638000',DEFAULT,DEFAULT,'Anction','O289450382',
+        TO_DATE('26-4月-1979','DD-MON-YYYY'),'0','0');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'AeChiev6y','Aris345meas','曹文華','DuWeiLing@yahoo.com.tw','112台北市北投區立德路117號','0228986150',DEFAULT,DEFAULT,'AeChiev6y','A161327161',
+        TO_DATE('16-3月-1989','DD-MON-YYYY'),'0','1');
+INSERT INTO MEMBER
+VALUES(LPAD(member_seq.NEXTVAL,6,0),'Larearrive','cha43hveX6u','夏宜庭','JiaYiTing@hotmail.com','433台中市沙鹿區台灣大道七段200號','0937882434',DEFAULT,DEFAULT,'Larearrive','B217898729',
+        TO_DATE('16-6月-2014','DD-MON-YYYY'),'0','0');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'booboo','March8610','Marshmellow','marchboo@hotmail.com','320桃園市中壢區民族路六段508號','034909885',null,TO_DATE('2016-10-22','YYYY-MM-DD'),'Marshmellow','H290206858',TO_DATE('1987-01-27','YYYY-MM-DD'),'0','0');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'minnie5','Minnie901','Minnie','minmax23@yahoo.com.tw','338桃園市蘆竹區南崁路一段369號','032706888',null,TO_DATE('2016-09-05','YYYY-MM-DD'),'Minnie','H260377102',TO_DATE('1986-10-27','YYYY-MM-DD'),'0','0');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'Milomilo','Milogogo2','MILO','flyflymilo@yahoo.com.tw','600嘉義市東區忠孝路668號','052719088',null,TO_DATE('2016-08-16','YYYY-MM-DD'),'Milolo','Q154413646',TO_DATE('1988-06-18','YYYY-MM-DD'),'0','1');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'SAMmmm','Sam8888','SAM','samash@hotmail.com','408台中市南屯區文心南三路289號','0437042855',null,TO_DATE('2016-09-26','YYYY-MM-DD'),'SAM','B150254185',TO_DATE('1987-01-27','YYYY-MM-DD'),'0','1');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'Mickeyyoyo','Mouse90','Mickey','mickey56@hotmail.com','114台北市內湖區舊宗路一段268號','0287910110',null,TO_DATE('2016-07-11','YYYY-MM-DD'),'Mickey','A178666780',TO_DATE('1983-10-18','YYYY-MM-DD'),'0','1');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'Penguinbaboo','Pb268394','Penguin','penguinoo@yahoo.com.tw','300新竹市東區慈雲路188號','035638000',null,TO_DATE('2016-09-29','YYYY-MM-DD'),'Penguin','J181904751',TO_DATE('1990-12-25','YYYY-MM-DD'),'0','1');
+INSERT INTO MEMBER VALUES (LPAD(member_seq.NEXTVAL,6,0),'kikilalaxx','Kkll0000','KikiLala','kikilala7@hotmail.com','112台北市北投區立德路117號','0228986150',null,TO_DATE('2016-10-11','YYYY-MM-DD'),'KikiLala','A268265353',TO_DATE('1991-12-05','YYYY-MM-DD'),'0','0');
+ 
+
+commit;
+/* ------------------------------------------ 訂位 ------------------------------------------ */
+CREATE SEQUENCE reservation_SEQ 
+INCREMENT BY 1
+START WITH 1
+NOCACHE;
+
+CREATE TABLE reservation (
+resvno VARCHAR2(6) NOT NULL CONSTRAINT reservation_resvno_PK PRIMARY KEY,
+memno VARCHAR2(6) NOT NULL,
+tableno VARCHAR2(6) NOT NULL,
+resvdate DATE NOT NULL,
+resvperiod VARCHAR2(24) NOT NULL,
+teamno VARCHAR2(6),
+resvstate VARCHAR2(2),
+CONSTRAINT reservation_memno_FK FOREIGN KEY (memno) REFERENCES member (memno),
+CONSTRAINT reservation_tableno_FK FOREIGN KEY (tableno) REFERENCES stotable (tableno)
+);
+
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '1-10月-16', '000000001111111111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '1-11月-16', '000000000001111111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '2-11月-16', '000000000000011111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000002', '1-11月-16', '000000000000011111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000002', '1-11月-16', '000000000000011111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000002', '3-11月-16', '000000000000001111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000001', '2-11月-16', '000000000000000111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '1-11月-16', '000000000000000111100000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '2-11月-16', '000000001111000000000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '1-11月-16', '000000001111100000000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000001', '3-11月-16', '000000001111110000000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000004', '1-11月-16', '000000001111111100000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000007', '1-11月-16', '000000001111111000000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000010', '1-11月-16', '000000001111111110000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000013', '3-11月-16', '000000001111111111000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000014', SYSDATE, '000000001111111111000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000001', '000009', SYSDATE, '000000001111111000000000', null, '0');
+ INSERT INTO reservation VALUES (lpad(to_char(reservation_SEQ.NEXTVAL),6 ,'0'),'000002', '000008', SYSDATE, '000000000011111110000000', '000001', '0');
+ COMMIT;
+
+-- ==============================揪團==============================
+CREATE SEQUENCE teamno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TABLE team (
+  teamno VARCHAR2(6) NOT NULL,
+  memno VARCHAR2(6) NOT NULL,
+  resvno VARCHAR2(6) NOT NULL,
+  teamcount NUMBER(4) NOT NULL,
+  teamdesc VARCHAR2(1000),
+  teamstate NUMBER(2) NOT NULL,
+  teamtitle VARCHAR2(40),
+  CONSTRAINT team_teamno_PK PRIMARY KEY(teamno),
+  CONSTRAINT team_memno_FK FOREIGN KEY(memno) REFERENCES member(memno),
+  CONSTRAINT team_resvno_FK FOREIGN KEY(resvno) REFERENCES reservation(resvno)
+);
+
+INSERT INTO TEAM(TEAMNO,MEMNO,RESVNO,TEAMCOUNT,TEAMDESC,TEAMSTATE,TEAMTITLE)
+VALUES(lpad(teamno_SEQ.nextval,6,0), '000001', '000001', 5, '主玩演化論 一起來體驗大滅絕吧', 1, 'troll個創世神');
+INSERT INTO TEAM(TEAMNO,MEMNO,RESVNO,TEAMCOUNT,TEAMDESC,TEAMSTATE,TEAMTITLE)
+VALUES(lpad(teamno_SEQ.nextval,6,0), '000003', '000005', 4, '矮人礦坑 希望不要挖到炎魔....', 1, '北韓精英級跨國挖礦教學團');
+INSERT INTO TEAM(TEAMNO,MEMNO,RESVNO,TEAMCOUNT,TEAMDESC,TEAMSTATE,TEAMTITLE)
+VALUES(lpad(teamno_SEQ.nextval,6,0), '000006', '000006', 4, '妙語說書人 中壢區只能有一個天橋底下說書的', 1, '第87屆狐炎亂雨大賽');
+
+COMMIT;
+
+-- ==============================揪團細項==============================
+
+CREATE TABLE team_detail(
+  teamno VARCHAR2(6) NOT NULL,
+  memno VARCHAR2(6) NOT NULL,
+  CONSTRAINT team_detail_teamno_memno_PK PRIMARY KEY(teamno, memno),
+  CONSTRAINT team_detail_teamno_FK FOREIGN KEY(teamno) REFERENCES team(teamno),
+  CONSTRAINT team_detail_memno_FK FOREIGN KEY(memno) REFERENCES member(memno)
+);
+
+
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000001', '000001');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000001', '000004');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000001', '000005');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000001', '000006');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000001', '000007');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000002', '000002');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000002', '000003');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000002', '000009');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000002', '000010');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000003', '000006');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000003', '000005');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000003', '000002');
+INSERT INTO TEAM_DETAIL(TEAMNO,MEMNO)
+VALUES('000003', '000007');
+
+COMMIT;
+
+-- ==============================會員評論==============================
+CREATE SEQUENCE memcomno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TABLE member_comment(
+  memcomno VARCHAR2(6) NOT NULL,
+  teamno VARCHAR2(6),
+  memno VARCHAR2(6) NOT NULL,
+  comno VARCHAR2(6),
+  comdetail VARCHAR2(1000),
+  comdate DATE NOT NULL,
+  memscore NUMBER(4,2) DEFAULT 3,
+  CONSTRAINT member_comment_memcomno_PK PRIMARY KEY(memcomno),
+  CONSTRAINT member_comment_teamno_FK FOREIGN KEY(teamno) REFERENCES team(teamno),
+  CONSTRAINT member_comment_memno_FK FOREIGN KEY(memno) REFERENCES member(memno),
+  CONSTRAINT member_comment_comno_FK FOREIGN KEY(comno) REFERENCES member(memno)
+);
+
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000002', '000003', '000008', '神一般的礦工 北韓居然有這種人才?!', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000001', '000004', '000007', '連續87個回合骰3個1是要怎麼玩', TO_DATE('2016-10-01','YYYY-MM-DD'), 1);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000003', '000002', '000007', '比政客還會扯 當之無愧的冠軍啊', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000002', '000003', '000009', '只能封你為北韓挖掘帝了', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000001', '000005', '000007', '心機超重但很樂於分享戰術的人', TO_DATE('2016-10-01','YYYY-MM-DD'), 3);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000003', '000002', '000005', '太扯了吧 各種靠賽也能贏', TO_DATE('2016-10-01','YYYY-MM-DD'), 4);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000002', '000001', '000008', '神一般的礦工 北韓居然有這種人才?!', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000001', '000001', '000007', '連續87個回合骰3個1是要怎麼玩', TO_DATE('2016-10-01','YYYY-MM-DD'), 1);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000003', '000001', '000007', '比政客還會扯 當之無愧的冠軍啊', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000002', '000002', '000009', '只能封你為北韓挖掘帝了', TO_DATE('2016-10-01','YYYY-MM-DD'), 5);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000001', '000002', '000007', '心機超重但很樂於分享戰術的人', TO_DATE('2016-10-01','YYYY-MM-DD'), 3);
+INSERT INTO MEMBER_COMMENT(MEMCOMNO,TEAMNO,MEMNO,COMNO,COMDETAIL,COMDATE,MEMSCORE)
+VALUES(lpad(memcomno_SEQ.nextval,6,0), '000003', '000002', '000005', '太扯了吧 各種靠賽也能贏', TO_DATE('2016-10-01','YYYY-MM-DD'), 4);
+
+COMMIT;
+
+/* ---------------------------------------- 店家評論 ---------------------------------------- */
+CREATE SEQUENCE store_comment_SEQ
+INCREMENT BY 1
+START WITH 1
+NOCACHE;
+
+CREATE TABLE store_comment (
+storecomno VARCHAR2(6) NOT NULL CONSTRAINT store_comment_storecomno_PK PRIMARY KEY,
+memno VARCHAR2(6) NOT NULL,
+stono VARCHAR2(6) NOT NULL,
+comdetail VARCHAR2(1000),
+comdate DATE NOT NULL,
+stoscore NUMBER(4) NOT NULL,
+CONSTRAINT store_comment_memno FOREIGN KEY (memno) REFERENCES member (memno),
+CONSTRAINT store_comment_stono FOREIGN KEY (stono) REFERENCES store (stono)
+);
+
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '值得推薦的好店家!!!','1-10月-16', 1);
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000001', '000002', '專業.用心服務的好店家!!!','2-10月-16', 1);
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000002', '000003', '東西好.交貨快的好賣家!!!歡迎大家到他的賣場逛逛...','3-10月-16', 1);
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000001', '000001', '謝謝,交易愉快!!希望還有機會跟您買東西...','4-10月-16', 1);
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000002', '000001', '東西好.交貨快的好賣家!!!歡迎大家到他的賣場逛逛...','5-10月-16', 1);
+ INSERT INTO store_comment VALUES (lpad(to_char(store_comment_SEQ.NEXTVAL),6 ,'0'),'000002', '000001', '價格比其他賣場貴100一樣的東西，最氣的是我選宅配/快遞，偏要用郵寄4-5天才收到，都已經比別人多賺100了，還欺騙消費者賺那個費用!! 真的是貨比三家不吃虧，總評:貨運慢，商品品質一樣，服務態度沒很滿意 ',SYSDATE, -1);
+
+-- ==============================最愛店家============================== 
+
+CREATE TABLE favorite_store(
+  memno VARCHAR2(6) NOT NULL,
+  stono VARCHAR2(6) NOT NULL,
+  CONSTRAINT favorite_store_memno_stono_PK PRIMARY KEY(memno, stono),
+  CONSTRAINT favorite_store_memno_FK FOREIGN KEY(memno) REFERENCES member(memno),
+  CONSTRAINT favorite_store_stono_FK FOREIGN KEY(stono) REFERENCES store(stono)
+);
+      
+INSERT INTO FAVORITE_STORE(MEMNO,STONO)
+VALUES('000001', '000001');
+INSERT INTO FAVORITE_STORE(MEMNO,STONO)
+VALUES('000003', '000003');
+INSERT INTO FAVORITE_STORE(MEMNO,STONO)
+VALUES('000010', '000005');
+
+COMMIT;
+
+-- ==============================好友清單============================== 
+CREATE TABLE friend(
+  memno VARCHAR2(6) NOT NULL,
+  frino VARCHAR2(6) NOT NULL,
+  CONSTRAINT friend_memno_frino_PK PRIMARY KEY(memno, frino),
+  CONSTRAINT friend_memno_FK FOREIGN KEY(memno) REFERENCES member(memno),
+  CONSTRAINT friend_stono_FK FOREIGN KEY(frino) REFERENCES member(memno)
+);
+
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000003', '000005');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000003', '000007');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000005', '000003');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000007', '000002');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000007', '000009');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000007', '000008');
+INSERT INTO FRIEND(MEMNO,FRINO)
+VALUES('000008', '000007');
+
+COMMIT;
+
+-- ==============================商品類別============================== 
+CREATE TABLE product_class(
+ classno VARCHAR2(6) NOT NULL,
+ classname VARCHAR(20) NOT NULL,
+ CONSTRAINT product_class_classno_PK PRIMARY KEY (classno)
+);
+
+CREATE SEQUENCE class_seq
+INCREMENT By 1
+START WITH 1;
+
+INSERT INTO product_class VALUES( lpad(class_seq.nextval,6,0) , '派對遊戲');
+INSERT INTO product_class VALUES( lpad(class_seq.nextval,6,0) , '策略遊戲');
+INSERT INTO product_class VALUES( lpad(class_seq.nextval,6,0) , '戰爭遊戲');
+INSERT INTO product_class VALUES( lpad(class_seq.nextval,6,0) , '家庭遊戲');
+INSERT INTO product_class VALUES( lpad(class_seq.nextval,6,0) , '主題遊戲');
+
+-- ==============================商品==============================
+
+CREATE TABLE product(
+ prono VARCHAR2(6) NOT NULL,
+ stono VARCHAR2(6) NOT NULL,
+ classno VARCHAR2(6) NOT NULL,
+ proname VARCHAR(40) NOT NULL,
+ proprice NUMBER(10) NOT NULL,
+ prostate VARCHAR(2) NOT NULL,
+ proqty NUMBER(4) NOT NULL,
+ adddate DATE, 
+ playernum VARCHAR2(20),
+ playerage VARCHAR2(20),
+ lang VARCHAR2(20),
+ playtime VARCHAR2(20),
+ prosumm VARCHAR2(40), 
+ prodesc CLOB, 
+ propic BLOB,
+ CONSTRAINT product_prono_PK PRIMARY KEY (prono), 
+ CONSTRAINT product_classno_FK FOREIGN KEY (classno) REFERENCES product_class(classno),
+ CONSTRAINT product_stono_FK FOREIGN KEY (stono) REFERENCES store(stono));
+ 
+CREATE SEQUENCE pro_seq
+INCREMENT By 1
+START WITH 1;
+ 
+ INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000003' , '000001',
+'龍與地下城:紅龍之怒', 2000, '1', 12, sysdate, '3人', '8~12', '中文', '1小時', '準備接受紅龍的怒火！', '在另一個具有魔法的世界中，邪惡的勢力正破壞著人類、矮人還有精靈們殘存的生存地。為了反擊，英勇的戰士們祭出了刀劍和魔法來迎擊躲在黑暗中的惡靈。在風暴山峰的四週，英雄們討伐惡靈的行動激起了紅龍．阿薩德蘭的怒火。', '');
+
+  INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000001' , '000003',
+'砰! 子彈版 Bang! The Bullet', 1200, '1', 2, sysdate, '4人', '15+', '中文', '30分鐘', '拔出你的槍','台灣四大桌遊之一、最經典的陣營心機遊戲！子彈版內含基本版、道奇市擴充、日正當中擴充以及一大票幫手擴充，還有超精美警徽，絕對物超所值！遊戲中歹徒追殺警長，警長追捕歹徒，而叛徒則躲在暗處，伺機從雙方的對立中獲利。', ''
+);
+
+  INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000005' , '000005',
+'哈利波特:霍格華茲之戰', 390, '1', 6, sysdate, '3人', '20+', 'english', '1小時', '保護城堡免受邪惡威脅', 'The forces of evil are threatening to overrun Hogwarts castle in Harry Potter: Hogwarts Battle, a cooperative deck-building game, and its up to four students to ensure the safety of the school by defeating villains and consolidating their defenses. In the game, players take on the role of a Hogwarts student: Harry, Ron, Hermione or Neville, each with their own personal deck of cards that s used to acquire resources.', ''
+);
+
+  INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000001' , '000002',
+'瘟疫危機:傳承', 1540, '1', 3, sysdate, '2人', '6~10', 'english', '10分鐘',　'拯救世界','作為抗疫團隊中的一位專業成員，你必須致力為四種致命的傳染病研發療藥，同時確保疫情受控。你和你的隊友將走遍世界，治理受感染的患者，採集病原研發藥物。「瘟疫危機」是個合作遊戲，講求團隊精神，所有玩家將一齊勝出或同告任務失敗。分分秒秒間，傳染病突然爆發，疫症急速蔓延。你能及時找到全部四種療藥嗎？人類的命運，正掌握在你們手中！', ''
+);
+
+  INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000003' , '000001',
+'血色狂怒', 260, '1', 2, sysdate, '4人', '6~12', '中文', '2小時', '生命短暫，但榮耀永存', '玩家們扮演強大的維京部族，在世界墜入預言中的毀滅之前為榮譽而戰。隨著諸神的黃昏吞噬大地，維京海盜們繼續發揚最拿手的本領：侵略和掠奪，在宏偉的大戰中殺戮和死亡。生命短暫，但榮耀永存！ 身為維京海盜，你有很多方式來贏得榮譽。', ''
+);
+
+  INSERT INTO product VALUES (lpad(pro_seq.nextval,6,0) , '000003' , '000001',
+'諾亞方舟 NOAH S ARK', 2470, '1', 5, sysdate, '6人', '4~12', '中文', '1.5小時', '從洪災下生存','洪水即將來臨！現在，是否準備好扮演諾亞一角，引導所有動物安全搭上方舟？
+動物實體縮小製作、附帶動物介紹圖形及四國語言解說，可以讓玩家認識動物以及各種語言的說法，並且提供空間與重量之平衡能力與手部的靈活反應訓練，亦是增進親子關係最佳遊戲。', ''
+);
+
+-- ==============================購物車==============================6 17
+
+CREATE TABLE cart(
+ prono VARCHAR2(6) NOT NULL,
+ memno VARCHAR2(6) NOT NULL,
+ procount NUMBER(4) NOT NULL, 
+ CONSTRAINT cart_prono_PK PRIMARY KEY (prono,memno),
+ CONSTRAINT cart_prono_FK FOREIGN KEY (prono) REFERENCES product(prono),
+ CONSTRAINT cart_memno_FK FOREIGN KEY (memno) REFERENCES member(memno));
+ 
+INSERT INTO cart VALUES ('000001','000001',12);
+INSERT INTO cart VALUES ('000002','000001',5);
+INSERT INTO cart VALUES ('000003','000001',8);
+INSERT INTO cart VALUES ('000001','000002',1);
+INSERT INTO cart VALUES ('000005','000005',7);
+INSERT INTO cart VALUES ('000006','000001',3);
+INSERT INTO cart VALUES ('000001','000004',2);
+INSERT INTO cart VALUES ('000003','000005',7);
+INSERT INTO cart VALUES ('000005','000017',2);
+INSERT INTO cart VALUES ('000006','000009',7);
+INSERT INTO cart VALUES ('000002','000005',1);
+INSERT INTO cart VALUES ('000006','000005',7);
+INSERT INTO cart VALUES ('000002','000011',1);
+INSERT INTO cart VALUES ('000006','000012',2);
+INSERT INTO cart VALUES ('000006','000013',3);
+INSERT INTO cart VALUES ('000006','000014',8);
+INSERT INTO cart VALUES ('000006','000015',1);
+-- ==============================訂單==============================
+
+CREATE TABLE orders(
+ ordno VARCHAR2(6) NOT NULL,
+ memno VARCHAR2(6) NOT NULL,
+ pricesum NUMBER(6) NOT NULL,
+ total NUMBER(6) NOT NULL,
+ payment VARCHAR2(2) NOT NULL,
+ ordstate VARCHAR2(2) NOT NULL,
+ orddate DATE NOT NULL,
+ pickname VARCHAR2(20) NOT NULL,
+ pickup VARCHAR2(2) NOT NULL,
+ pickphone VARCHAR2(10) NOT NULL,
+ pickaddr VARCHAR2(100) NOT NULL,
+ CONSTRAINT orders_ordno_PK PRIMARY KEY (ordno),
+ CONSTRAINT orders_memno_FK FOREIGN KEY (memno) REFERENCES member(memno));
+
+ CREATE SEQUENCE orders_seq
+ INCREMENT By 1
+ START WITH 1;
+
+INSERT INTO orders VALUES (lpad(orders_seq.nextval,6,0), '000001', 3200, 3, '0', '0', sysdate, '劉揚宣', '0', '0912123456','
+407台中市西屯區台灣大道四段688號');
+INSERT INTO orders VALUES (lpad(orders_seq.nextval,6,0), '000002', 260, 1, '0', '0', sysdate, '大帥哥', '0', '0917568366','
+970花蓮縣花蓮市德安一街190號');
+INSERT INTO orders VALUES (lpad(orders_seq.nextval,6,0), '000002', 2650, 3, '0', '1', sysdate, 'loki', '1', '0917568366','
+600嘉義市西區民族路874號');
+INSERT INTO orders VALUES (lpad(orders_seq.nextval,6,0), '000006', 1540, 1, '1', '0', sysdate, '謝昌江', '1', '0437042855','
+324桃園市平鎮區義民路193號');
+INSERT INTO orders VALUES (lpad(orders_seq.nextval,6,0), '000008', 4000, 2, '1', '1', sysdate, '某某某', '0', '035638000','
+320桃園市中壢區中大路300號');
+
+-- ==============================訂單細項==============================
+
+CREATE TABLE orders_detail(
+ orddetno VARCHAR2(6),
+ ordno VARCHAR2(6),
+ prono VARCHAR2(6),
+ procount NUMBER(4),
+ CONSTRAINT orders_detail_orddetno_PK PRIMARY KEY (orddetno),
+ CONSTRAINT orders_detial_ordno_FK FOREIGN KEY (ordno) REFERENCES orders(ordno),
+ CONSTRAINT orders_detial_pronp_FK FOREIGN KEY (prono) REFERENCES product(prono));
+
+CREATE SEQUENCE orddet_seq
+INCREMENT BY 1
+START WITH 1;
+
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000001','000001',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000001','000002',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000002','000005',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000003','000001',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000003','000003',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000003','000005',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000004','000004',1);
+INSERT INTO orders_detail VALUES(lpad(orddet_seq.nextval,6,'0'), '000005','000001',2);
+
+-- ==============================黑名單==============================
+
+CREATE TABLE blacklist (
+
+memno  VARCHAR2(6) NOT NULL, 
+stono  VARCHAR2(6) NOT NULL,
+
+CONSTRAINT blacklist_memno_stono_PK PRIMARY KEY(memno,stono),
+CONSTRAINT blacklist_memno_FK FOREIGN KEY(memno) REFERENCES member(memno),
+CONSTRAINT blacklist_stono_FK FOREIGN KEY(stono) REFERENCES store(stono));
+
+INSERT INTO blacklist(memno,stono) VALUES ('000001','000002');
+INSERT INTO blacklist(memno,stono) VALUES ('000001','000001');
+INSERT INTO blacklist(memno,stono) VALUES ('000003','000004');
+INSERT INTO blacklist(memno,stono) VALUES ('000002','000001');
+INSERT INTO blacklist(memno,stono) VALUES ('000004','000003');
+COMMIT;
+
+-- ==============================商品評論==============================
+
+CREATE TABLE PRODUCT_COMMENT(
+  PROCOMNO VARCHAR2(6) NOT NULL,
+  MEMNO  VARCHAR2(6) NOT NULL,
+  PRONO VARCHAR2(6) NOT NULL,
+  COMDETAIL VARCHAR(1000),
+  COMDATE DATE NOT NULL,
+  COMSCORE NUMBER(4,2) NOT NULL,
+  CONSTRAINT PRODUCT_COMMENT_PK PRIMARY KEY (PROCOMNO),
+  CONSTRAINT PROCOM_MEM_FK FOREIGN KEY (MEMNO) REFERENCES MEMBER (MEMNO),
+  CONSTRAINT PROCOM_PRO_FK FOREIGN KEY (PRONO) REFERENCES PRODUCT (PRONO)
+);
+
+CREATE SEQUENCE product_comment_seq
+  INCREMENT BY 1
+  START WITH 1
+  NOMAXVALUE
+  NOCYCLE
+  NOCACHE;
+
+INSERT INTO PRODUCT_COMMENT(PROCOMNO,MEMNO,PRONO,COMDETAIL,COMDATE,COMSCORE )
+      VALUES(LPAD(product_comment_seq.NEXTVAL,6,0),'000001','000001','太好玩啦',SYSDATE,3.45);
+INSERT INTO PRODUCT_COMMENT   (PROCOMNO,MEMNO,PRONO,COMDETAIL,COMDATE,COMSCORE )
+      VALUES(LPAD(product_comment_seq.NEXTVAL,6,0),'000007','000004','神作',SYSDATE,10.01);
+INSERT INTO PRODUCT_COMMENT(PROCOMNO,MEMNO,PRONO,COMDETAIL,COMDATE,COMSCORE )
+      VALUES(LPAD(product_comment_seq.NEXTVAL,6,0),'000009','000006','設計有夠爛',SYSDATE,3.08);
+INSERT INTO PRODUCT_COMMENT   (PROCOMNO,MEMNO,PRONO,COMDETAIL,COMDATE,COMSCORE )
+      VALUES(LPAD(product_comment_seq.NEXTVAL,6,0),'000002','000003','休假最佳選擇',SYSDATE,10.24);
+commit; 
+
+-- ==============================商品檢舉==============================
+
+CREATE TABLE product_report(
+ prorepno VARCHAR2(6),
+ memno VARCHAR2(6),
+ prono VARCHAR2(6),
+ reason VARCHAR2(400),
+ repdate DATE,
+ checked VARCHAR2(2),
+ CONSTRAINT product_report_prorepno_PK PRIMARY KEY  (prorepno),
+ CONSTRAINT product_report_memno_FK FOREIGN KEY (memno) REFERENCES member(memno),
+ CONSTRAINT product_report_prono_FK FOREIGN KEY (prono) REFERENCES product (prono)
+);
+
+CREATE SEQUENCE prorep_seq
+INCREMENT BY 1
+START WITH 1;
+
+INSERT INTO product_report VALUES (lpad(prorep_seq.nextval,6,'0'), '000001', '000001', '圖文不符合', sysdate, '0');
+INSERT INTO product_report VALUES (lpad(prorep_seq.nextval,6,'0'), '000012', '000003', '價格太貴了', sysdate, '0');
+INSERT INTO product_report VALUES (lpad(prorep_seq.nextval,6,'0'), '000006', '000004', '送來的是二手貨', sysdate, '0');
+
+COMMIT;
+
+-- ==============================店家檢舉==============================
+
+CREATE TABLE store_report(
+ storepno VARCHAR2(6),
+ memno VARCHAR2(6),
+ stono VARCHAR2(6),
+ reason VARCHAR2(400),
+ repdate DATE,
+ checked VARCHAR2(2),
+ CONSTRAINT store_report_storepno_PK PRIMARY KEY  (storepno),
+ CONSTRAINT store_report_memno_FK FOREIGN KEY (memno) REFERENCES member(memno),
+ CONSTRAINT store_report_stono_FK FOREIGN KEY (stono) REFERENCES store (stono)
+);
+
+CREATE SEQUENCE storep_seq
+INCREMENT BY 1
+START WITH 1;
+
+INSERT INTO store_report VALUES (lpad(storep_seq.nextval,6,'0'), '000001', '000002', '環境有夠髒', sysdate, '0');
+INSERT INTO store_report VALUES (lpad(storep_seq.nextval,6,'0'), '000005', '000003', '燈光超暗', sysdate, '0');
+INSERT INTO store_report VALUES (lpad(storep_seq.nextval,6,'0'), '000002', '000006', '老闆態度很差', sysdate, '0');
+
+-- ==============================揪團檢舉==============================
+
+CREATE SEQUENCE teamrepno_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TABLE team_report(
+  teamrepno VARCHAR2(6) NOT NULL,
+  memno VARCHAR2(6) NOT NULL,
+  teamno VARCHAR2(6) NOT NULL,
+  reason VARCHAR2(400) NOT NULL,
+  repdate DATE NOT NULL,
+  checked VARCHAR2(2) NOT NULL,
+  CONSTRAINT team_report_teamrepno_PK PRIMARY KEY(teamrepno),
+  CONSTRAINT team_report_teamno_FK FOREIGN KEY(teamno) REFERENCES team(teamno),
+  CONSTRAINT team_report_memno_FK FOREIGN KEY(memno) REFERENCES member(memno)
+);
+
+INSERT INTO TEAM_REPORT(TEAMREPNO,MEMNO,TEAMNO,REASON,REPDATE,CHECKED)
+VALUES(lpad(teamrepno_SEQ.nextval,6,0), '000007', '000003', '完全是個87團', TO_DATE('2016-10-01','YYYY-MM-DD'), '0');
+COMMIT;
+INSERT INTO TEAM_REPORT(TEAMREPNO,MEMNO,TEAMNO,REASON,REPDATE,CHECKED)
+VALUES(lpad(teamrepno_SEQ.nextval,6,0), '000009', '000002', '根本亂七八糟', TO_DATE('2016-02-01','YYYY-MM-DD'), '0');
+COMMIT;
+INSERT INTO TEAM_REPORT(TEAMREPNO,MEMNO,TEAMNO,REASON,REPDATE,CHECKED)
+VALUES(lpad(teamrepno_SEQ.nextval,6,0), '000001', '000001', 'bad game', TO_DATE('2016-12-21','YYYY-MM-DD'), '0');
+COMMIT;
+
+-- ==============================熱門產品==============================
+CREATE TABLE popular_product (
+ prono                VARCHAR2(6) NOT NULL,
+ CONSTRAINT popular_product_prono_PK PRIMARY KEY(prono),
+ CONSTRAINT popular_product_prono_FK FOREIGN KEY(prono) REFERENCES product(prono)
+);
+
+INSERT INTO popular_product VALUES ('000001');
+INSERT INTO popular_product VALUES ('000002');
+INSERT INTO popular_product VALUES ('000003');
+INSERT INTO popular_product VALUES ('000004');
+INSERT INTO popular_product VALUES ('000005');
+
+
+-- ==============================熱門店家==============================
+CREATE TABLE popular_store (
+ stono                 VARCHAR2(6) NOT NULL,
+ CONSTRAINT popular_store_stono_PK PRIMARY KEY(stono),
+ CONSTRAINT popular_store_stono_FK FOREIGN KEY(stono) REFERENCES store(stono)
+);
+
+INSERT INTO popular_store VALUES ('000001');
+INSERT INTO popular_store VALUES ('000002');
+INSERT INTO popular_store VALUES ('000003');
+INSERT INTO popular_store VALUES ('000004');
+INSERT INTO popular_store VALUES ('000005');
+INSERT INTO popular_store VALUES ('000006');
+commit;
