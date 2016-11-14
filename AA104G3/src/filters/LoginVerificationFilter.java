@@ -36,44 +36,52 @@ public class LoginVerificationFilter implements Filter {
 
 		// 從session取出登入會員
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
-		
-		if (memberVO == null) {				
-		
+
+		if (memberVO == null) {
+
 			LinkedHashSet<CartVO> cartList = new LinkedHashSet<CartVO>();
-			session.setAttribute("cartList", cartList);	
-			
+			session.setAttribute("cartList", cartList);
+
 			// session.setAttribute("location", req.getRequestURI());
 			// resp.sendRedirect(req.getContextPath()+"/login.jsp");
-			 return;			
-		} else {				
-			LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>)session.getAttribute("cartList");
-			List<String> list = new LinkedList<String>();
-			/*取出訪客時的購物車內容*/
-			for(CartVO cartVO:cartList){
-				list.add(cartVO.getProno()+","+cartVO.getProcount());
-			}
+			return;
+		} else {
 			
-			/*取出訪客原有的購物車*/
-			CartService cartSvc = new CartService();
-			cartList = (LinkedHashSet<CartVO>) cartSvc.getOneCart(memberVO.getMemno()); 
+			LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
 			
-			/*把訪客時的購物車內容加到會員原本就有的購物車*/
-			System.out.println(list.isEmpty());
-			for(String str : list){
-				String[] arr = str.split(",");				
-				CartVO cartVO = new CartVO();
-				cartVO.setMemno(memberVO.getMemno());
-				cartVO.setProno(arr[0]);
-				cartVO.setProcount(Integer.parseInt(arr[1]));				
-				cartList.add(cartVO);				
+			if (!(cartList == null)) {
+				List<String> list = new LinkedList<String>();
+				/* 取出訪客時的購物車內容 */
+				for (CartVO cartVO : cartList) {
+					list.add(cartVO.getProno() + "," + cartVO.getProcount());
+				}
+
+				/* 取出訪客原有的購物車 */
+				CartService cartSvc = new CartService();
+				cartList = (LinkedHashSet<CartVO>) cartSvc.getOneCart(memberVO.getMemno());
+
+				/* 把訪客時的購物車內容加到會員原本就有的購物車 */
+				
+				for (String str : list) {
+					String[] arr = str.split(",");
+					CartVO cartVO = new CartVO();
+					cartVO.setMemno(memberVO.getMemno());
+					cartVO.setProno(arr[0]);
+					cartVO.setProcount(Integer.parseInt(arr[1]));
+					cartList.add(cartVO);
+				}
+			} else {
+				/* 取出訪客原有的購物車 */
+				CartService cartSvc = new CartService();
+				cartList = (LinkedHashSet<CartVO>) cartSvc.getOneCart(memberVO.getMemno());
 			}
 
-			session.setAttribute("cartList", cartList);	
-			
-			/*當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更動*/
+			session.setAttribute("cartList", cartList);
+
+			/* 當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更動 */
 			InsertIntoCartListener listener = new InsertIntoCartListener(context, cartList);
 			session.setAttribute("addCart_listener", listener);
-			
+
 			chain.doFilter(request, response);
 		}
 	}

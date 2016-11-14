@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="Big5"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-	<!-- ���~�C�� -->
+	<!-- 錯誤列表 -->
 	<c:if test="${not empty errorMsgs}">
 		<ul>
 			<c:forEach var="msg" items="${errorMsgs}">
@@ -22,13 +22,13 @@
 	</c:if>
 
 	<ul>
-		<!-- �C�X�Ҧ��ӫ~ -->
+		<!-- 列出所有商品 -->
 		<li><a href='<%=request.getContextPath()%>/product/product.do?action=getAllByDate'>List</a> all Products.</li>
 		<li><a href='<%=request.getContextPath()%>/front-end/product/listAllProduct.jsp'>List</a> all Products.</li>
 		<li>
-			<!-- ��J���X�d�߳浧 -->
+			<!-- 輸入號碼查詢單筆 -->
 			<form method="post" action="<%=request.getContextPath()%>/product/product.do">
-				<b>��J�ӫ~�s��(ex:000001):</b>						 
+				<b>輸入商品編號(ex:000001):</b>						 
 				<input type="text" name="prono">
 				<input type="submit">
 				<input type='hidden' name="action" value="getOne_For_Display">
@@ -38,10 +38,10 @@
 		<jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService"/>
 		
 		<li>
-			<!-- ��ܸ��X�d�߳浧 -->
+			<!-- 選擇號碼查詢單筆 -->
 			<form method="post" action="<%=request.getContextPath()%>/product/product.do">
-			<!-- ��ܦW�٬d�߳浧 -->
-				<b>��ܰӫ~:</b>
+			<!-- 選擇名稱查詢單筆 -->
+				<b>選擇商品:</b>
 				<select name="prono">
 					<c:forEach var="productVO" items="${productSvc.all}">
 						<option value="${productVO.prono}">${productVO.proname}</option>
@@ -53,28 +53,28 @@
 		</li>
 		
 		<jsp:useBean id="product_classSvc" scope="page" class="com.product_class.model.Product_classService"></jsp:useBean>
-		<!-- ������O�d�߳浧 -->
+		<!-- 選擇類別查詢單筆 -->
 		<li>
 			<form method="post" action="<%=request.getContextPath()%>/product_class/product_class.do">
-			<b>������O:</b>
+			<b>選擇類別:</b>
 			<select name="classno">
 				<c:forEach var="product_classVO" items="${product_classSvc.all}">
 					<option value="${product_classVO.classno}">${product_classVO.classname}</option>
 				</c:forEach>
 			</select>
-			<input type="submit" value="�e�X">
+			<input type="submit" value="送出">
 			<input type="hidden" name="action" value="listProducts_ByClassno_a">
 			</form>
 		</li>
-		<!-- �ƦX�d�� -->
+		<!-- 複合查詢 -->
 		<li>
 			<form method="post" action="<%=request.getContextPath()%>/product/product.do" name="form1">
-				<b>�ƦX�d��</b><br>
-				<b>��J�ӫ~�s��</b>
+				<b>複合查詢</b><br>
+				<b>輸入商品編號</b>
 				<input type="text" name="prono" value="000003"><br>
-				<b>��J�ӫ~�W��</b>
-				<input type="text" name="proname" value="���Q�i�S"><br>
-				<b>��ܰӫ~���O</b>
+				<b>輸入商品名稱</b>
+				<input type="text" name="proname" value="哈利波特"><br>
+				<b>選擇商品類別</b>
 				<select name="classno">
 					<option value="">
 					<c:forEach var="product_classVO" items="${product_classSvc.all}">
@@ -85,15 +85,12 @@
 				<input type="hidden" name="action" value="listProducts_ByCompositeQuery">				
 			</form>
 		</li>
-		<!-- �s�W�@���ӫ~ -->
+		<!-- 新增一項商品 -->
 		<li><a href='<%=request.getContextPath()%>/front-end/product/addProduct.jsp'>Add</a> a new Product.</li>
-		<!-- ���O�޲z -->
-		<b>���O�޲z:</b>
+		<!-- 類別管理 -->
+		<b>類別管理:</b>
 		<li><a href='<%=request.getContextPath()%>/front-end/product_class/listAllProduct_class.jsp'>List</a> all Classes.</li>
-	</ul>
-	
-	
-	
+	</ul>	
 
 </body>
 </html>
