@@ -11,8 +11,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 </head>
 <body>
-memberVO = null : ${empty memberVO}<br>${memberVO.memno}<br>
-cartList.size :  <%=((LinkedHashSet<CartVO>)session.getAttribute("cartList")).size() %>
+
+<%-- memberVO = null : ${empty memberVO}<br>${memberVO.memno}<br>
+cartList.size :  <%=((LinkedHashSet<CartVO>)session.getAttribute("cartList")).size() %> --%>
 
 	<!-- 錯誤訊息 -->
 	<c:if test="${not empty errorMsgs}">

@@ -87,46 +87,46 @@ public class CartServlet extends HttpServlet {
 		}
 
 		/* 給訪客用的購物車 */
-		if ("insert_For_Guest".equals(action)) {
-			List<String> errorMsgs = new LinkedList<String>();
-			request.setAttribute("errorMsgs", errorMsgs);
-
-			try {
-				String prono = request.getParameter("prono").trim();	
-
-				Integer procount = null;
-				try {
-					procount = new Integer(request.getParameter("procount").trim());
-				} catch (NumberFormatException e) {
-					procount = 0;
-					errorMsgs.add("數量請填數字");
-				}
-
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
-					failureView.forward(request, response);
-					return;
-				}
-
-				CartVO cartVO = new CartVO();
-				cartVO.setMemno("000000");
-				cartVO.setProno(prono);
-				cartVO.setProcount(procount);
-				/* 開始新增資料 */
-				cartList.add(cartVO);
-
-				/* 新增完成，轉交資料 */
-				String url = "/front-end/cart/listAllCart.jsp";
-				RequestDispatcher successView = request.getRequestDispatcher(url);
-				successView.forward(request, response);
-
-			} catch (Exception e) {
-				/* 其他錯誤處理 */
-				errorMsgs.add("error: " + e.getMessage());
-				RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
-				failureView.forward(request, response);
-			}
-		}
+//		if ("insert_For_Guest".equals(action)) {
+//			List<String> errorMsgs = new LinkedList<String>();
+//			request.setAttribute("errorMsgs", errorMsgs);
+//
+//			try {
+//				String prono = request.getParameter("prono").trim();	
+//
+//				Integer procount = null;
+//				try {
+//					procount = new Integer(request.getParameter("procount").trim());
+//				} catch (NumberFormatException e) {
+//					procount = 0;
+//					errorMsgs.add("數量請填數字");
+//				}
+//
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
+//					failureView.forward(request, response);
+//					return;
+//				}
+//
+//				CartVO cartVO = new CartVO();
+//				cartVO.setMemno("000000");
+//				cartVO.setProno(prono);
+//				cartVO.setProcount(procount);
+//				/* 開始新增資料 */
+//				cartList.add(cartVO);
+//
+//				/* 新增完成，轉交資料 */
+//				String url = "/front-end/cart/listAllCart.jsp";
+//				RequestDispatcher successView = request.getRequestDispatcher(url);
+//				successView.forward(request, response);
+//
+//			} catch (Exception e) {
+//				/* 其他錯誤處理 */
+//				errorMsgs.add("error: " + e.getMessage());
+//				RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
+//				failureView.forward(request, response);
+//			}
+//		}
 
 		if ("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();

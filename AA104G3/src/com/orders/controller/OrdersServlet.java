@@ -20,7 +20,6 @@ import com.orders.model.OrdersVO;
 import com.orders_detail.model.Orders_detailService;
 import com.product.model.ProductService;
 
-
 /*@WebServlet("/OrdersServlet")*/
 public class OrdersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,12 +38,25 @@ public class OrdersServlet extends HttpServlet {
 
 		/* 轉向填寫訂單資訊頁面 */
 		if ("write_Orders_Detail".equals(action)) {
+
 			List<String> errorMsgs = new ArrayList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
 			String requestURL = request.getParameter("requestURL");
-			
+
 			try {
-				String memno = request.getParameter("memno");				
+				/* 以店家分類好的購物車清單 */
+				Map<String, LinkedHashSet<CartVO>> map = (Map<String, LinkedHashSet<CartVO>>) session
+						.getAttribute("map");
+
+				String memno = request.getParameter("memno");
+				String stono = request.getParameter("stono");
+
+				/* 取出map中選擇要結帳的店家的商品清單放到session中 */
+				LinkedHashSet<CartVO> checkList = map.get(stono);
+				session.setAttribute("checkList", checkList);
+
+				/* 移除購物車清單 */
+				session.removeAttribute("map");
 
 				MemberService memberSvc = new MemberService();
 				MemberVO memberVO = memberSvc.getOneMember(memno);
@@ -54,7 +66,8 @@ public class OrdersServlet extends HttpServlet {
 				successView.forward(request, response);
 
 			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
+
+				errorMsgs.add(" " + e.getMessage());
 				RequestDispatcher failureView = request.getRequestDispatcher(requestURL);
 				failureView.forward(request, response);
 			}
@@ -62,17 +75,14 @@ public class OrdersServlet extends HttpServlet {
 		}
 
 		/* 檢查訂單資訊 */
-		if ("check_Orders_Detail".equals(action)) {			
+		if ("check_Orders_Detail".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			String requestURL = request.getParameter("requestURL");			
+			String requestURL = request.getParameter("requestURL");
 
 			try {
-//				String memno = request.getParameter("memno");
-//				MemberService memberSvc = new MemberService();
-//				MemberVO memberVO = memberSvc.getOneMember(memno);
-				
-				MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+
+				MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 				String memno = memberVO.getMemno();
 
 				String memname = request.getParameter("memname");
@@ -116,7 +126,7 @@ public class OrdersServlet extends HttpServlet {
 					errorMsgs.add("請輸入收件人地址");
 					memaddr = memberVO.getMemaddr();
 				}
-				
+
 				// String addrReg="";
 				// if(!memaddr.trim().matches(addrReg)){
 				// errorMsgs.add("請輸入正確的地址");
@@ -132,50 +142,51 @@ public class OrdersServlet extends HttpServlet {
 				// String forthnum = request.getParameter("forthnum");
 				// String month = request.getParameter("month");
 				// String idnt = request.getParameter("idnt");
-				
-				/*回傳修改前的資料*/
+
+				/* 回傳修改前的資料 */
 				memberVO.setMemname(memname);
 				memberVO.setMemphone(memphone);
 				memberVO.setMememail(mememail);
 				memberVO.setMemaddr(memaddr);
 
 				if (!errorMsgs.isEmpty()) {
-					request.setAttribute("memberVO", memberVO);					
+					request.setAttribute("memberVO", memberVO);
 					RequestDispatcher failureView = request.getRequestDispatcher(requestURL);
 					failureView.forward(request, response);
 					return;
 				}
 
-				/* 取得購物車內容 & 商品價格 */
-				CartService cartSvc = new CartService();
-//				LinkedHashSet<CartVO> list = cartSvc.getOneCart(memno);
-				
-				LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>)session.getAttribute("cartList");
+				LinkedHashSet<CartVO> checkList = (LinkedHashSet<CartVO>) session.getAttribute("checkList");
+
 				ProductService productSvc = new ProductService();
 				Integer pricesum = 0;
 				Integer total = 0;
 
-				for (CartVO vo : cartList) {
+				for (CartVO vo : checkList) {
 					pricesum += vo.getProcount() * (productSvc.getOneProduct(vo.getProno())).getProprice();
-					total += vo.getProcount();					
+					total += vo.getProcount();
 				}
-				
-				
-				
-				/* 新增訂單 */
+
+				/* 新增訂單 & 訂單細項 & 砍掉購物車同店家商品 */
 				OrdersService ordersSvc = new OrdersService();
-				OrdersVO ordersVO = ordersSvc.addOrders(memno, pricesum, total, payment, new Date(System.currentTimeMillis()), memname, pickup, memphone, memaddr, cartList);
-								
-				/* 清除購物車 */				
-				cartSvc.deleteAll(memno);								
-				request.setAttribute("ordersVO", ordersVO);
-//				request.setAttribute("list", list);
+				OrdersVO ordersVO = ordersSvc.addOrders(memno, pricesum, total, payment,
+						new Date(System.currentTimeMillis()), memname, pickup, memphone, memaddr, checkList);
+
+				/* 砍掉總購物車(cartList)中與結帳購物車(checkList)重複的 */
+				LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
+				for (CartVO cartVO : checkList){
+					if(cartList.contains(cartVO)){
+						cartList.remove(cartVO);
+					}
+				}
+
+					request.setAttribute("ordersVO", ordersVO); // 傳到checkUp.jsp
 
 				RequestDispatcher successView = request.getRequestDispatcher("/front-end/orders/checkUp.jsp");
 				successView.forward(request, response);
 
 			} catch (Exception e) {
-				errorMsgs.add("error "+e.getMessage());
+				errorMsgs.add("error " + e.getMessage());
 				RequestDispatcher failureView = request.getRequestDispatcher(requestURL);
 				failureView.forward(request, response);
 			}

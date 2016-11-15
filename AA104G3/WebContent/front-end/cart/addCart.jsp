@@ -52,19 +52,8 @@
 					value="<%=(cartVO == null) ? 1 : cartVO.getProcount()%>" min="1"></td>
 			</tr>
 		</table>
-
-		<c:if test="${memberVO.memno != '000000'}">
-			<!-- 給會員用的新增到購物車 -->
 			<input type="hidden" name="action" value="insert">
 			<input type="submit" value="送出新增">
-		</c:if>
-
-		<c:if test="${memberVO.memno == '000000'}">
-			<!-- 給訪客用的新增到購物車 -->
-			<input type="hidden" name="action" value="insert_For_Guest">
-			<input type="submit" value="送出新增">
-		</c:if>
-
 	</FORM>
 </body>
 </html>

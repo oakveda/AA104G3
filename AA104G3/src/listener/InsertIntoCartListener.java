@@ -1,3 +1,5 @@
+/*用來更改購物車內的物品跟資料庫內購物車的差異*/
+
 package listener;
 
 import java.util.*;
@@ -38,7 +40,7 @@ public class InsertIntoCartListener implements HttpSessionBindingListener {
 
 		/* 若舊清單已存在同商品則修改數量 */
 		for (CartVO cartVO : cartList) {
-			oldCartList = cartSvc.getOneCart(cartVO.getMemno()); //取得登入者DB內的購物車列表
+			oldCartList = cartSvc.getOneCart(cartVO.getMemno()); // 取得登入者DB內的購物車列表
 			for (CartVO oldCartVO : oldCartList) {
 				if (cartVO.getProno().equals(oldCartVO.getProno())
 						&& (!cartVO.getProcount().equals(oldCartVO.getProcount()))) {
@@ -48,29 +50,30 @@ public class InsertIntoCartListener implements HttpSessionBindingListener {
 			}
 		}
 
-		for (CartVO cartVO : oldCartList) {
-			oldList.add(cartVO.getMemno() + "," + cartVO.getProno()); //抓出DB清單
-		}
-
-		/* 若新清單有舊清單所沒有的，則新增 */
-		for (CartVO cartVO : cartList) {
-			if (!oldCartList.contains(cartVO)) {
-				System.out.println("新增 " + cartVO);
-				cartSvc.addCart(cartVO.getProno(), cartVO.getMemno(), cartVO.getProcount());
+		if (oldCartList != null) {
+			for (CartVO cartVO : oldCartList) {
+				oldList.add(cartVO.getMemno() + "," + cartVO.getProno()); // 抓出DB清單
 			}
 
-			newList.add(cartVO.getMemno() + "," + cartVO.getProno()); //抓出session清單
-		}
+			/* 若新清單有舊清單所沒有的，則新增 */
+			for (CartVO cartVO : cartList) {
+				if (!oldCartList.contains(cartVO)) {
+					System.out.println("新增 " + cartVO);
+					cartSvc.addCart(cartVO.getProno(), cartVO.getMemno(), cartVO.getProcount());
+				}
 
-		/* 若新清單有舊清單所沒有的，則刪除 */
-		for(String str : oldList){
-			if(!newList.contains(str)){
-				String[] arr = str.split(",");				
-				 System.out.println("刪除 "+arr[1]);
-				 cartSvc.deleteOne(arr[0], arr[1]);
+				newList.add(cartVO.getMemno() + "," + cartVO.getProno()); // 抓出session清單
+			}
+
+			/* 若新清單有舊清單所沒有的，則刪除 */
+			for (String str : oldList) {
+				if (!newList.contains(str)) {
+					String[] arr = str.split(",");
+					System.out.println("刪除 " + arr[1]);
+					cartSvc.deleteOne(arr[0], arr[1]);
+				}
 			}
 		}
-
 
 	}
 

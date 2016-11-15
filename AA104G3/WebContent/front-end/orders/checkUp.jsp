@@ -86,8 +86,9 @@
 							<th>購買數量</th>
 							<th>小計</th>
 						</tr>
+						<%LinkedHashSet<CartVO> checkList = (LinkedHashSet<CartVO>)session.getAttribute("checkList"); %>
 						<jsp:useBean id="productSvc" class="com.product.model.ProductService"/>
-						<c:forEach var="cartVO" items="${cartList}">
+						<c:forEach var="cartVO" items="${checkList}">
 							<tr>
 								<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
 								<td>${productSvc.getOneProduct(cartVO.prono).proprice}元</td>
@@ -96,10 +97,7 @@
 								</td>
 						</c:forEach>
 					</table>
-					<% 
-					LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>)session.getAttribute("cartList"); 
-					cartList.clear();
-					%>
+					<%session.removeAttribute("checkList");%>
 				</div>
 			</div>
 			<!-- ==============================顯示訂單資料結束============================== -->

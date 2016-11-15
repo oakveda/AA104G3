@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.cart.model.CartService;
 import com.cart.model.CartVO;
 import com.orders_detail.model.Orders_detailJNDIDAO;
 import com.orders_detail.model.Orders_detailVO;
@@ -32,8 +33,12 @@ public class OrdersJNDIDAO implements OrdersDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT * FROM orders WHERE ordno = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM orders order by ordno";
 
+	/* 砍掉購物車內的商品 */
+	private static final String DELETE_ALL_CART_BY_MEMNO_AND_PRONO = "DELETE FROM cart WHERE prono = ? and memno = ?";
+
 	/* 撤銷訂單 */
 	private static final String REVOKE = "UPDATE orders SET ordstate = 2 where ordno = ?";
+
 	/* 查某會員所有訂單 */
 	private static final String GET_ALL_BY_MEMNO = "SELECT * FROM orders WHERE memno = ?";
 
@@ -41,13 +46,13 @@ public class OrdersJNDIDAO implements OrdersDAO_interface {
 	public void insertWithOrders_detail(OrdersVO ordersVO, LinkedHashSet<CartVO> list) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-
+		String prono = null;
 		try {
 			con = ds.getConnection();
 			con.setAutoCommit(false);
 
 			/* 新增訂單 */
-			String cols[]={"ordno"};
+			String cols[] = { "ordno" };
 			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			pstmt.setString(1, ordersVO.getMemno());
 			pstmt.setInt(2, ordersVO.getPricesum());
@@ -59,25 +64,33 @@ public class OrdersJNDIDAO implements OrdersDAO_interface {
 			pstmt.setString(8, ordersVO.getPickphone());
 			pstmt.setString(9, ordersVO.getPickaddr());
 			pstmt.executeUpdate();
-			
-			
-			/*取得自增主鍵值*/
-			String key=null;
-			ResultSet rs =pstmt.getGeneratedKeys();
+
+			/* 取得自增主鍵值 */
+			String key = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
 			rs.next();
-			key=rs.getString(1);			
+			key = rs.getString(1);
 			rs.close();
-			
-			/*新增訂單細項*/
+
+			/* 新增訂單細項 */
 			Orders_detailJNDIDAO dao = new Orders_detailJNDIDAO();
-			Orders_detailVO  orders_detailVO = new Orders_detailVO();
-			for(CartVO cartVO :list){
+			Orders_detailVO orders_detailVO = new Orders_detailVO();
+			for (CartVO cartVO : list) {
 				orders_detailVO.setOrdno(key);
 				orders_detailVO.setProno(cartVO.getProno());
-				orders_detailVO.setProcount(cartVO.getProcount());				
+				orders_detailVO.setProcount(cartVO.getProcount());
 				dao.insert(orders_detailVO, con);
 				
+				prono = cartVO.getProno();
+				
+				/*砍掉購物車*/
+				pstmt= con.prepareStatement(DELETE_ALL_CART_BY_MEMNO_AND_PRONO);
+				pstmt.setString(1, prono);
+				pstmt.setString(2, ordersVO.getMemno());
+				pstmt.executeUpdate();
 			}
+			
+			
 			
 
 			con.commit();

@@ -1,3 +1,10 @@
+/*
+判斷是否為會員，非會員的話給一個 memno 為 000000 的編號，
+為會員的情況，會先從session抓出還在訪客時有新增過的商品
+新增進去，因為改寫過 hashset 重複的東西不會再加進去，再把
+更動過的購物車覆蓋session，再對購物車附加傾聽器
+*/
+
 package filters;
 
 import java.io.IOException;
@@ -36,28 +43,29 @@ public class LoginVerificationFilter implements Filter {
 
 		// 從session取出登入會員
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
-				
+
 		if (memberVO == null) {
 			memberVO = new MemberVO();
 			memberVO.setMemno("000000");
 			session.setAttribute("memberVO", memberVO);
-			
-			LinkedHashSet<CartVO> cartList = new LinkedHashSet<CartVO>();			
-			session.setAttribute("cartList", cartList);			
-			
-//			session.setAttribute("location", req.getRequestURI());
-//			resp.sendRedirect(req.getContextPath()+"/select_page.jsp");			
-//			return;
-		}else if(memberVO.getMemno() == "000000"){
-			//do nothing
-		}else{				
-			
-			LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
-			
-			if (!(cartList == null)) {
+
+			LinkedHashSet<CartVO> cartList = new LinkedHashSet<CartVO>();
+			session.setAttribute("cartList", cartList);
+
+			// session.setAttribute("location", req.getRequestURI());
+			// resp.sendRedirect(req.getContextPath()+"/select_page.jsp");
+			// return;
+		} else if (memberVO.getMemno() == "000000") {
+			// do nothing
+		} else {
+
+			LinkedHashSet<CartVO> guestCartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
+			LinkedHashSet<CartVO> cartList = null;
+
+			if (!(guestCartList == null)) {
 				List<String> list = new LinkedList<String>();
 				/* 取出訪客時的購物車內容 */
-				for (CartVO cartVO : cartList) {
+				for (CartVO cartVO : guestCartList) {
 					list.add(cartVO.getProno() + "," + cartVO.getProcount());
 				}
 
@@ -66,7 +74,7 @@ public class LoginVerificationFilter implements Filter {
 				cartList = (LinkedHashSet<CartVO>) cartSvc.getOneCart(memberVO.getMemno());
 
 				/* 把訪客時的購物車內容加到會員原本就有的購物車 */
-				
+
 				for (String str : list) {
 					String[] arr = str.split(",");
 					CartVO cartVO = new CartVO();
@@ -83,12 +91,12 @@ public class LoginVerificationFilter implements Filter {
 
 			session.setAttribute("cartList", cartList);
 
-			/* 當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更動 */
+			/* 當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更新 */
 			InsertIntoCartListener listener = new InsertIntoCartListener(context, cartList);
 			session.setAttribute("addCart_listener", listener);
-						
+
 		}
-		
+
 		chain.doFilter(request, response);
 	}
 
