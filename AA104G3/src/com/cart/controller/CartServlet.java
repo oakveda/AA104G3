@@ -109,7 +109,7 @@ public class CartServlet extends HttpServlet {
 				}
 
 				CartVO cartVO = new CartVO();
-				cartVO.setMemno("999999");
+				cartVO.setMemno("000000");
 				cartVO.setProno(prono);
 				cartVO.setProcount(procount);
 				/* 開始新增資料 */

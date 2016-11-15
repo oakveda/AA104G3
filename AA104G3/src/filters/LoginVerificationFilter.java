@@ -36,16 +36,21 @@ public class LoginVerificationFilter implements Filter {
 
 		// 從session取出登入會員
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
-
+				
 		if (memberVO == null) {
-
-			LinkedHashSet<CartVO> cartList = new LinkedHashSet<CartVO>();
-			session.setAttribute("cartList", cartList);
-
-			// session.setAttribute("location", req.getRequestURI());
-			// resp.sendRedirect(req.getContextPath()+"/login.jsp");
-			return;
-		} else {
+			memberVO = new MemberVO();
+			memberVO.setMemno("000000");
+			session.setAttribute("memberVO", memberVO);
+			
+			LinkedHashSet<CartVO> cartList = new LinkedHashSet<CartVO>();			
+			session.setAttribute("cartList", cartList);			
+			
+//			session.setAttribute("location", req.getRequestURI());
+//			resp.sendRedirect(req.getContextPath()+"/select_page.jsp");			
+//			return;
+		}else if(memberVO.getMemno() == "000000"){
+			//do nothing
+		}else{				
 			
 			LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
 			
@@ -81,9 +86,10 @@ public class LoginVerificationFilter implements Filter {
 			/* 當購物車從session脫離時，會呼叫傾聽器，對資料庫內的購物車進行更動 */
 			InsertIntoCartListener listener = new InsertIntoCartListener(context, cartList);
 			session.setAttribute("addCart_listener", listener);
-
-			chain.doFilter(request, response);
+						
 		}
+		
+		chain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {

@@ -152,7 +152,7 @@
 						<div class="panel-body">
 							<div class=" text-right ">
 
-								<c:if test="${not empty memberVO}">
+								<c:if test="${memberVO.memno != '000000'}">
 									<!-- 一般會員的結帳 -->
 									<div class="ck">
 										<form method="post"
@@ -166,7 +166,7 @@
 									</div>
 								</c:if>
 								<div class="ck">
-									<c:if test="${empty memberVO}">
+									<c:if test="${memberVO.memno == '000000'}">
 										<!-- 訪客的結帳 -->
 										<form method="post" action="<%=request.getContextPath()%>/login.jsp">
 											<input type="submit" value="結帳"  class="btn btn-default"> <input type="hidden"
