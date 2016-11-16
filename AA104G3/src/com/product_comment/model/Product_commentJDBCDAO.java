@@ -304,4 +304,10 @@ public class Product_commentJDBCDAO implements Product_commentDAO_interface{
 		}
 //		
 	}
+
+	@Override
+	public List<Product_commentVO> getAll(String prono) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

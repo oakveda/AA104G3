@@ -1,6 +1,7 @@
 package com.orders.controller;
 
 import java.io.IOException;
+
 import java.util.*;
 import java.sql.*;
 import java.sql.Date;
@@ -19,6 +20,7 @@ import com.orders.model.OrdersService;
 import com.orders.model.OrdersVO;
 import com.orders_detail.model.Orders_detailService;
 import com.product.model.ProductService;
+import com.store.model.*;
 
 /*@WebServlet("/OrdersServlet")*/
 public class OrdersServlet extends HttpServlet {
@@ -162,10 +164,18 @@ public class OrdersServlet extends HttpServlet {
 				Integer pricesum = 0;
 				Integer total = 0;
 
+				
+				StoreVO sto = null;
+				
 				for (CartVO vo : checkList) {
 					pricesum += vo.getProcount() * (productSvc.getOneProduct(vo.getProno())).getProprice();
 					total += vo.getProcount();
+										
+					sto = new StoreService().getOneStore(productSvc.getOneProduct(vo.getProno()).getStono());
 				}
+				
+				/*用來展示匯款帳號*/
+				request.setAttribute("sto", sto);
 
 				/* 新增訂單 & 訂單細項 & 砍掉購物車同店家商品 */
 				OrdersService ordersSvc = new OrdersService();
@@ -174,13 +184,14 @@ public class OrdersServlet extends HttpServlet {
 
 				/* 砍掉總購物車(cartList)中與結帳購物車(checkList)重複的 */
 				LinkedHashSet<CartVO> cartList = (LinkedHashSet<CartVO>) session.getAttribute("cartList");
-				for (CartVO cartVO : checkList){
-					if(cartList.contains(cartVO)){
+				for (CartVO cartVO : checkList) {
+					if (cartList.contains(cartVO)) {
 						cartList.remove(cartVO);
 					}
 				}
-
-					request.setAttribute("ordersVO", ordersVO); // 傳到checkUp.jsp
+				
+				
+				request.setAttribute("ordersVO", ordersVO); // 傳到checkUp.jsp
 
 				RequestDispatcher successView = request.getRequestDispatcher("/front-end/orders/checkUp.jsp");
 				successView.forward(request, response);

@@ -47,4 +47,9 @@ public class Product_commentService {
 		return dao.getAll();
 	}
 	
+	/*用商店編號來篩選*/
+	public List<Product_commentVO> getAll(String prono){
+		return dao.getAll(prono);
+	}
+	
 }

@@ -86,48 +86,6 @@ public class CartServlet extends HttpServlet {
 
 		}
 
-		/* 給訪客用的購物車 */
-//		if ("insert_For_Guest".equals(action)) {
-//			List<String> errorMsgs = new LinkedList<String>();
-//			request.setAttribute("errorMsgs", errorMsgs);
-//
-//			try {
-//				String prono = request.getParameter("prono").trim();	
-//
-//				Integer procount = null;
-//				try {
-//					procount = new Integer(request.getParameter("procount").trim());
-//				} catch (NumberFormatException e) {
-//					procount = 0;
-//					errorMsgs.add("數量請填數字");
-//				}
-//
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
-//					failureView.forward(request, response);
-//					return;
-//				}
-//
-//				CartVO cartVO = new CartVO();
-//				cartVO.setMemno("000000");
-//				cartVO.setProno(prono);
-//				cartVO.setProcount(procount);
-//				/* 開始新增資料 */
-//				cartList.add(cartVO);
-//
-//				/* 新增完成，轉交資料 */
-//				String url = "/front-end/cart/listAllCart.jsp";
-//				RequestDispatcher successView = request.getRequestDispatcher(url);
-//				successView.forward(request, response);
-//
-//			} catch (Exception e) {
-//				/* 其他錯誤處理 */
-//				errorMsgs.add("error: " + e.getMessage());
-//				RequestDispatcher failureView = request.getRequestDispatcher("/front-end/cart/addCart.jsp");
-//				failureView.forward(request, response);
-//			}
-//		}
-
 		if ("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
@@ -136,11 +94,18 @@ public class CartServlet extends HttpServlet {
 				String memno = request.getParameter("memno").trim();
 				String prono = request.getParameter("prono").trim();
 				Integer procount = null;
+
+
 				try {
 					procount = new Integer(request.getParameter("procount").trim());
 				} catch (NumberFormatException e) {
-					procount = 0;
+					procount = 1;
 					errorMsgs.add("數量請填數字");
+				}
+				
+				if (procount > 99) {
+					errorMsgs.add("數量上限為99");
+					procount = 99;
 				}
 
 				for (CartVO vo : cartList) {
@@ -180,15 +145,13 @@ public class CartServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
 			String requestURL = request.getParameter("requestURL");
-			CartService cartSvc = new CartService();
-			LinkedHashSet<CartVO> list;
 
 			try {
 				/* 取得會員編號，商品編號，新、舊數量 */
 				String memno = request.getParameter("memno");
 				String prono = request.getParameter("prono");
 
-				Integer newcount = null;
+				Integer newcount = 0;
 
 				try {
 					newcount = new Integer(request.getParameter("newcount").trim());
@@ -202,52 +165,19 @@ public class CartServlet extends HttpServlet {
 					return;
 				}
 
-				for (CartVO vo : cartList) {
-					if (vo.getMemno().equals(memno) && vo.getProno().equals(prono)) {
-						vo.setProcount(newcount);
+				Integer oldcount = 0;
+				/*修改購物車中的數量*/
+				for (CartVO cartVO : cartList) {
+					if (cartVO.getMemno().equals(memno) && cartVO.getProno().equals(prono)) {
+						cartVO.setProcount(newcount);
 					}
 				}
-
-				// Integer oldcount = new
-				// Integer(request.getParameter("oldcount"));
-				// Integer procount = oldcount;
-
-				/* 更改商品庫存 */
-				// ProductService productSvc = new ProductService();
-				// ProductVO productVO = productSvc.getOneProduct(prono);
-				// Integer oldqty = productVO.getProqty();
-				// Integer newqty = 0;
-				//
-				// if (newcount >= oldcount) {
-				// procount += newcount - oldcount;
-				// newqty = oldqty - (newcount - oldcount);
-				//
-				// } else {
-				// procount -= Math.abs(newcount - oldcount);
-				// newqty = oldqty + Math.abs(newcount - oldcount);
-				// }
-				//
-				// if (newqty < 0) {
-				// errorMsgs.add("庫存不足");
-				// }
-				// if (!errorMsgs.isEmpty()) {
-				// list = cartSvc.getOneCart(memno);
-				// request.setAttribute("list", list);
-				// RequestDispatcher failureView =
-				// request.getRequestDispatcher(requestURL);
-				// failureView.forward(request, response);
-				// return;
-				// }
-				//
-				// productVO.setProqty(newqty);
-				// productSvc.updateQty(productVO);
-
-				/* 更改購物車數量 */
-				// cartSvc.updateCart(memno, prono, procount);
-				// list = cartSvc.getOneCart(memno);
-
-				/* 轉送到個人購物車列表 */
-				// request.setAttribute("list", list);
+				
+				/*修改庫存*/
+//				ProductService productSvc = new ProductService();
+//				productSvc.getOneProduct(prono);
+				
+				
 				RequestDispatcher successView = request.getRequestDispatcher(requestURL);
 				successView.forward(request, response);
 
@@ -273,6 +203,7 @@ public class CartServlet extends HttpServlet {
 				// CartService cartSvc = new CartService();
 				// cartSvc.deleteOne(memno, prono);
 
+				/*刪除購物車中選擇的商品*/
 				for (CartVO vo : cartList) {
 					if (vo.getMemno().equals(memno) && vo.getProno().equals(prono)) {
 						cartList.remove(vo);

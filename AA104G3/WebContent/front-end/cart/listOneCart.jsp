@@ -114,7 +114,7 @@
 					session.setAttribute("map", map);
 				%>
 
-				<!-- 購物車中的商品的店家的集合 -->
+				<!-- 購物車中的所有商品的店家的集合 -->
 				<c:forEach var="key" items="${key}">
 					
 					<%
@@ -143,8 +143,7 @@
 									<tr>
 										<td>${storeSvc.getOneStore(productSvc.getOneProduct(cartVO.prono).stono).stoname}</td>
 										<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
-										<td>NT $
-											${productSvc.getOneProduct(cartVO.prono).proprice} 元</td>
+										<td>NT $ ${productSvc.getOneProduct(cartVO.prono).proprice} 元</td>
 										<td>
 											<form method="post" action="<%=request.getContextPath()%>/cart/cart.do">
 											    <input type="number" name="newcount" value="${cartVO.procount}" min="1" max="${cartVO.procount+productSvc.getOneProduct(cartVO.prono).proqty}" style="width: 3em;">

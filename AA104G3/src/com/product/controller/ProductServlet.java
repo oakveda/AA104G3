@@ -47,7 +47,7 @@ public class ProductServlet extends HttpServlet {
 
 		if ("getAllByName".equals(action)) {
 			ProductService productSvc = new ProductService();
-			List<ProductVO> list = (List<ProductVO>) productSvc.getAllByName();
+			List<ProductVO> list = (List<ProductVO>) productSvc.getAllSortByName();
 			request.setAttribute("list", list);
 			String url = "/front-end/product/search_product_list.jsp";
 			RequestDispatcher successView = request.getRequestDispatcher(url);

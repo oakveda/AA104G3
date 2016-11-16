@@ -37,8 +37,10 @@ public class Product_commentJNDIDAO implements Product_commentDAO_interface{
 	private static final String GET_ALL_STMT = "SELECT procomno,memno,prono,comdetail,comdate,comscore FROM product_comment ";
 
 	private static final String GET_ONE_STMT = "SELECT procomno,memno,prono,comdetail,comdate,comscore  FROM product_comment where procomno=? ";
-
-
+	
+	/*±qprono¨Ó¿z¿ï*/
+	private static final String GET_ALL_ByProno = "SELECT procomno,memno,prono,comdetail,comdate,comscore FROM product_comment where prono = ?";
+	
 	@Override
 	public void insert(Product_commentVO product_commentVO) {
 
@@ -230,6 +232,53 @@ public class Product_commentJNDIDAO implements Product_commentDAO_interface{
 			}
 			
 
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return proComList;
+	}
+	
+	@Override
+	public List<Product_commentVO> getAll(String prono) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		List<Product_commentVO> proComList = new ArrayList<Product_commentVO>();
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_ByProno);
+			pstmt.setString(1, prono);
+
+			
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()){
+				Product_commentVO product_CommentVO = new Product_commentVO();
+				product_CommentVO.setProcomno(rs.getString("procomno"));
+				product_CommentVO.setMemno(rs.getString("memno"));
+				product_CommentVO.setProno(rs.getString("prono"));
+				product_CommentVO.setComdetail(rs.getString("comdetail"));
+				product_CommentVO.setComdate(rs.getDate("comdate"));
+				product_CommentVO.setComscore(rs.getDouble("comscore"));
+				proComList.add(product_CommentVO);
+			}
 
 			// Handle any driver errors
 		} catch (SQLException se) {

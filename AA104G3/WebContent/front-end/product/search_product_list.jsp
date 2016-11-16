@@ -123,7 +123,8 @@
             </div>  
                       
 <%--             <c:forEach var="productVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">  --%>            
+			end="<%=pageIndex+rowsPerPage-1%>">  --%>  
+			          
             <c:forEach var="productVO" items="${list}">             
                     <a href="<%=request.getContextPath()%>/product/product.do?prono=${productVO.prono}&amp;action=getOne_For_Display" class="list-group-item">
                         <div class="row">                        

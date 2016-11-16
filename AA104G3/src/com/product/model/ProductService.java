@@ -74,7 +74,7 @@ public class ProductService {
 		return dao.getAll();
 	}
 
-	public List<ProductVO> getAllByName() {
+	public List<ProductVO> getAllSortByName() {
 		return dao.getAllByName();
 	}
 

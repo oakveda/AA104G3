@@ -1,18 +1,24 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
+<%-- <%
 	request.setCharacterEncoding("BIG5");
-%>
+%> --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*" %>
 <%@ page import="com.product.model.*"%>
+<%@ page import="com.product_comment.model.*"%>
 
 <%
 	ProductService productSvc = new ProductService();
+	Product_commentService product_commentSvc = new Product_commentService();
+	List<Product_commentVO> product_commentList = product_commentSvc.getAll(request.getParameter("prono"));
+	pageContext.setAttribute("product_commentList", product_commentList);
 %>
+
+
+
 <jsp:useBean id="product_classSvc"
 	class="com.product_class.model.Product_classService" />
-<jsp:useBean id="product_commentSvc"
-	class="com.product_comment.model.Product_commentService" />
 <jsp:useBean id="memberSvc"
 	class="com.member.model.MemberService" />
 
@@ -48,6 +54,8 @@ textarea {
 </head>
 
 <body>
+
+
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-4"></div>
@@ -162,7 +170,7 @@ textarea {
 					<div class="panel-body">
 						<ul class="list-group">
 							<c:forEach var="product_commnetVO"
-								items="${product_commentSvc.all}">
+								items="${product_commentList}">
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-12 col-sm-2">

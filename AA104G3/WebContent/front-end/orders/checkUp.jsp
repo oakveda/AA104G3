@@ -26,7 +26,8 @@
 </head>
 
 <body>
-	<a href="<%=request.getContextPath()%>/front-end/orders/select_page.jsp">回首頁</a>
+	<a
+		href="<%=request.getContextPath()%>/front-end/orders/select_page.jsp">回首頁</a>
 	<br>
 	<br>
 	<!-- ==============================頁面開始============================== -->
@@ -62,43 +63,59 @@
 							<td>下單日期 : ${ordersVO.orddate}</td>
 						</tr>
 						<tr>
-							<td>銀行代碼 : 822</td>
+							<td class="bg-danger">銀行代碼 : ${sto.bankno}</td>
 						</tr>
 						<tr>
-							<td>匯款銀行名稱 : 中國信託</td>
+							<td class="bg-danger">匯款銀行名稱 : ${sto.bankname}</td>
 						</tr>
 						<tr>
-							<td>匯款銀行戶名 : 許文龍</td>
+							<td class="bg-danger">匯款銀行戶名 : ${sto.accountname}</td>
 						</tr>
 						<tr>
-							<td>匯款帳號 : 168131452012</td>
+							<td class="bg-danger">匯款帳號 : ${sto.accountno}</td>
 						</tr>
 						<tr>
-							<td>付款金額 : 新台幣 $ ${ordersVO.pricesum} 元</td>
+							<td class="bg-danger">付款金額 : 新台幣 $ ${ordersVO.pricesum} 元</td>
 						</tr>
 					</table>
-					<br> <br>
-
-					<table class="table">
-						<tr>
-							<th>產品名稱</th>
-							<th>價格</th>
-							<th>購買數量</th>
-							<th>小計</th>
-						</tr>
-						<%LinkedHashSet<CartVO> checkList = (LinkedHashSet<CartVO>)session.getAttribute("checkList"); %>
-						<jsp:useBean id="productSvc" class="com.product.model.ProductService"/>
-						<c:forEach var="cartVO" items="${checkList}">
-							<tr>
-								<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
-								<td>${productSvc.getOneProduct(cartVO.prono).proprice}元</td>
-								<td>${cartVO.procount}
-								<td>${cartVO.procount * productSvc.getOneProduct(cartVO.prono).proprice}元
-								</td>
-						</c:forEach>
-					</table>
-					<%session.removeAttribute("checkList");%>
 				</div>
+				<br> <br>
+
+
+
+
+
+				<div class="panel panel-info">
+					<div class="panel-heading">訂購商品</div>
+					<div class="panel-body">
+						<table class="table">
+							<tr>
+								<th>產品名稱</th>
+								<th>價格</th>
+								<th>購買數量</th>
+								<th>小計</th>
+							</tr>
+							<%
+								LinkedHashSet<CartVO> checkList = (LinkedHashSet<CartVO>) session.getAttribute("checkList");
+							%>
+							<jsp:useBean id="productSvc"
+								class="com.product.model.ProductService" />
+							<c:forEach var="cartVO" items="${checkList}">
+								<tr>
+									<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
+									<td>${productSvc.getOneProduct(cartVO.prono).proprice}元</td>
+									<td>${cartVO.procount}
+									<td>${cartVO.procount * productSvc.getOneProduct(cartVO.prono).proprice}元
+									</td>
+								</tr>
+							</c:forEach>
+						</table>
+
+					</div>
+				</div>
+
+				<!-- 移除結帳過的購物車 -->
+				<%-- <%session.removeAttribute("checkList");%> --%>
 			</div>
 			<!-- ==============================顯示訂單資料結束============================== -->
 		</div>

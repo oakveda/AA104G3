@@ -80,8 +80,7 @@ table {
 				<td><img alt="商品圖片"
 					src="/AA104G3/product/ShowPicture?prono=${productVO.prono}"></td>
 				<td>${productVO.proprice}</td>
-
-				<!-- 改善寫法? -->
+				
 				<c:set var="state" value="${productVO.prostate}" scope="request"></c:set>
 				<td><%=Change.changeProState((String) request.getAttribute("state"))%></td>
 
