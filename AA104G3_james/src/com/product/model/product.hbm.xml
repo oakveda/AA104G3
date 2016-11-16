@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.product.model.ProductVO" table="product">
+
+		<id name="prono" column="prono">
+			<generator class="generator.PronoGenerator"/>				
+		</id>
+
+		<property name="stono" column="stono" />
+		<!-- <property name="classno" column="classno" /> -->
+		<property name="proname" column="proname" />
+		<property name="proprice" column="proprice" />
+		<property name="prostate" column="prostate" />
+		<property name="proqty" column="proqty" />
+		<property name="adddate" column="adddate" />
+		<property name="playernum" column="playernum" />
+		<property name="playerage" column="playerage" />
+		<property name="lang" column="lang" />
+		<property name="playtime" column="playtime" />
+		<property name="prosumm" column="prosumm" />
+		<property name="prodesc" column="prodesc" />
+		<property name="propic" column="propic" />
+
+		<many-to-one name="product_classVO"
+			class="com.product_class.model.Product_classVO" lazy="false">
+			<column name="classno"></column>
+		</many-to-one>
+
+	</class>
+</hibernate-mapping>

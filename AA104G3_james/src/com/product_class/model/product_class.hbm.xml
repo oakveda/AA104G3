@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.product_class.model.Product_classVO" table="product_class">
+
+		<id name="classno" column="classno"></id>
+
+		<property name="classname" column="classname" />
+
+		<set name="products" table="product" lazy="false" cascade="all"
+			inverse="true" order-by="prono asc">
+			<key>
+				<column name="classno"></column>
+			</key>
+			<one-to-many class="com.product.model.ProductVO"/>
+		</set>
+	</class>
+</hibernate-mapping>
+
