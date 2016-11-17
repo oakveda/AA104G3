@@ -63,7 +63,7 @@
 							<td>下單日期 : ${ordersVO.orddate}</td>
 						</tr>
 						<tr>
-							<td class="bg-danger">銀行代碼 : ${sto.bankno}</td>
+							<td class="bg-danger">代碼 : ${sto.bankno}</td>
 						</tr>
 						<tr>
 							<td class="bg-danger">匯款銀行名稱 : ${sto.bankname}</td>

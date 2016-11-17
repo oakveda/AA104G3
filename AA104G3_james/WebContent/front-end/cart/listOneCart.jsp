@@ -116,104 +116,128 @@
 
 				<!-- 購物車中的所有商品的店家的集合 -->
 				<c:forEach var="key" items="${key}">
-					
+					<!-- 讓欄位名稱只秀出一次 -->
+					<%
+						int count = 0;
+						pageContext.setAttribute("count", count);
+					%>
+
 					<%
 						pageContext.setAttribute("list", map.get(pageContext.getAttribute("key")));
 					%>
+					<!-- 購物車中為key店家的商品 -->
+					<c:forEach var="cartVO" items="${list}">
 
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<i class="glyphicon glyphicon-shopping-cart"></i> 購物車
-						</div>
-						<table class="table">
-							<thead>
-								<tr>
-									<th>店家名稱</th>
-									<th>商品名稱</th>
-									<th>商品價格</th>
-									<th>購買數量</th>
-									<th>小計</th>
-									<th>刪除</th>
-								</tr>
-							</thead>
-							
-							<!-- 購物車中為key店家的商品 -->			
-							<c:forEach var="cartVO" items="${list}"> 
-								<tbody>
-									<tr>
-										<td>${storeSvc.getOneStore(productSvc.getOneProduct(cartVO.prono).stono).stoname}</td>
-										<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
-										<td>NT $ ${productSvc.getOneProduct(cartVO.prono).proprice} 元</td>
-										<td>
-											<form method="post" action="<%=request.getContextPath()%>/cart/cart.do">
-											    <input type="number" name="newcount" value="${cartVO.procount}" min="1" max="${cartVO.procount+productSvc.getOneProduct(cartVO.prono).proqty}" style="width: 3em;">
-											    <input type="submit" value="修改" class="btn btn-info ">
-											    <input type="hidden" name="memno" value="${cartVO.memno}">
-											    <input type="hidden" name="prono" value="${cartVO.prono}">
-											    <input type="hidden" name="oldcount" value="${cartVO.procount}">
-											    <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-											    <input type="hidden" name="action" value="getOne_For_Update">
-											</form>
-										</td>
-										<td>NT ${cartVO.procount * productSvc.getOneProduct(cartVO.prono).proprice}
-											元</td>
-										<td>
-											<form method="post" action="<%=request.getContextPath()%>/cart/cart.do">
-											    <button type="submit" value="刪除" class="glyphicon glyphicon-remove"></button>
-											    <input type="hidden" name="memno" value="${cartVO.memno}">
-											    <input type="hidden" name="prono" value="${cartVO.prono}">
-											    <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-											    <input type="hidden" name="action" value="delete_One_Product">
-											</form>
-										</td>
-									</tr>
-								</tbody>
-							</c:forEach>
-						</table>
-
-
-						<!-- 若購物車是空的就不顯示 -->
-						<c:if test="${not empty cartList}">
-							<div class="panel-body">
-								<div class=" text-right ">
-
-									<c:if test="${memberVO.memno != '000000'}">
-										<!-- 一般會員的結帳 -->
-										<div class="ck">
-											<form method="post" action="<%=request.getContextPath()%>/orders/orders.do">
-											    <button type="submit" class="btn btn-info">結帳</button>
-											    <input type="hidden" name="memno" value="${memberVO.memno}">
-											    <input type="hidden" name="stono" value="${key}">
-											    <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-											    <input type="hidden" name="action" value="write_Orders_Detail">
-											</form>
-										</div>
-									</c:if>
-
-									<div class="ck">
-										<c:if test="${memberVO.memno == '000000'}">
-											<!-- 訪客的結帳 -->
-											<form method="post" action="<%=request.getContextPath()%>/login.jsp">
-											    <input type="submit" value="結帳" class="btn btn-default">
-											    <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-											</form>
-										</c:if>
-									</div>
-
-
-									<div class="ck">
-										<a
-											href="<%=request.getContextPath()%>/front-end/cart/select_page.jsp">
-											<button type="button" class="btn btn-default ">繼續購物</button>
-										</a>
-									</div>
+						<div class="panel panel-info">
+							<c:if test="${count==0 }">
+								<div class="panel-heading">
+									<i class="glyphicon glyphicon-shopping-cart"></i>
+									${storeSvc.getOneStore(productSvc.getOneProduct(cartVO.prono).stono).stoname}
 								</div>
-							</div>
-						</c:if>
-					</div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>商品名稱</th>
+											<th>商品價格</th>
+											<th>購買數量</th>
+											<th>小計</th>
+											<th>刪除</th>
+										</tr>
+									</thead>
+									</c:if>
+									<%
+										count++;
+										pageContext.setAttribute("count", count);
+									%>
 
-				</c:forEach>
+									<tbody>
+										<tr>
+											<td>${productSvc.getOneProduct(cartVO.prono).proname}</td>
+											<td>NT $
+												${productSvc.getOneProduct(cartVO.prono).proprice} 元</td>
+											<td>
+												<form method="post"
+													action="<%=request.getContextPath()%>/cart/cart.do">
+													<input type="number" name="newcount"
+														value="${cartVO.procount}" min="1"
+														max="${cartVO.procount+productSvc.getOneProduct(cartVO.prono).proqty}"
+														style="width: 3em;"> <input type="submit"
+														value="修改" class="btn btn-info "> <input
+														type="hidden" name="memno" value="${cartVO.memno}">
+													<input type="hidden" name="prono" value="${cartVO.prono}">
+													<input type="hidden" name="oldcount"
+														value="${cartVO.procount}"> <input type="hidden"
+														name="requestURL" value="<%=request.getServletPath()%>">
+													<input type="hidden" name="action"
+														value="getOne_For_Update">
+												</form>
+											</td>
+											<td>NT ${cartVO.procount * productSvc.getOneProduct(cartVO.prono).proprice}
+												元</td>
+											<td>
+												<form method="post"
+													action="<%=request.getContextPath()%>/cart/cart.do">
+													<button type="submit" value="刪除"
+														class="glyphicon glyphicon-remove"></button>
+													<input type="hidden" name="memno" value="${cartVO.memno}">
+													<input type="hidden" name="prono" value="${cartVO.prono}">
+													<input type="hidden" name="requestURL"
+														value="<%=request.getServletPath()%>"> <input
+														type="hidden" name="action" value="delete_One_Product">
+												</form>
+											</td>
+										</tr>
+									</tbody>
+									</c:forEach>
+								</table>
 
+
+								<!-- 若購物車是空的就不顯示 -->
+								<c:if test="${not empty cartList}">
+									<div class="panel-body">
+										<div class=" text-right ">
+
+											<c:if test="${memberVO.memno != '000000'}">
+												<!-- 一般會員的結帳 -->
+												<div class="ck">
+													<form method="post"
+														action="<%=request.getContextPath()%>/orders/orders.do">
+														<button type="submit" class="btn btn-info">結帳</button>
+														<input type="hidden" name="memno"
+															value="${memberVO.memno}"> <input type="hidden"
+															name="stono" value="${key}"> <input type="hidden"
+															name="requestURL" value="<%=request.getServletPath()%>">
+														<input type="hidden" name="action"
+															value="write_Orders_Detail">
+													</form>
+												</div>
+											</c:if>
+
+											<div class="ck">
+												<c:if test="${memberVO.memno == '000000'}">
+													<!-- 訪客的結帳 -->
+													<form method="post"
+														action="<%=request.getContextPath()%>/login.jsp">
+														<input type="submit" value="結帳" class="btn btn-default">
+														<input type="hidden" name="requestURL"
+															value="<%=request.getServletPath()%>">
+													</form>
+												</c:if>
+											</div>
+
+
+											<div class="ck">
+												<a
+													href="<%=request.getContextPath()%>/front-end/cart/select_page.jsp">
+													<button type="button" class="btn btn-default ">繼續購物</button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</c:if>
+						</div>
+
+					</c:forEach>
 			</div>
 			<!-- ==============================購物車結束============================== -->
 			<!-- ===============================頁面結束=============================== -->
